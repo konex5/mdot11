@@ -10,4 +10,3 @@ def test_mdot_operators_dep():
 
 def test_mdot_routine_dep():
     from mdot_routine import mm_to_theta_no_gate
-
