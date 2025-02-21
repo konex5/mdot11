@@ -16,8 +16,14 @@ template <class Q> struct quantum_number_crtp {
 
 struct sh_none : quantum_number_crtp<sh_none> {
   static constexpr index_t qn_dim = 1;
-  inline static index_t qsum(index_t q1, index_t q2) { return 0; }
-  inline static index_t qsub(index_t q1, index_t q2) { return 0; }
+  inline static index_t qsum(index_t q1, index_t q2) {
+    (void)q1, (void)q2;
+    return 0;
+  }
+  inline static index_t qsub(index_t q1, index_t q2) {
+    (void)q1, (void)q2;
+    return 0;
+  }
 };
 
 struct sh_u1 : quantum_number_crtp<sh_u1> {

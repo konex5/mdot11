@@ -16,17 +16,17 @@ public:
   typedef uint16_t shape_t;
   typedef std::tuple<index_t, index_t, index_t> index_type;
   typedef std::tuple<shape_t, shape_t, shape_t> shape_type;
-  typedef std::tuple<index_t, index_t, index_t, index_t, index_t, index_t>
+  typedef std::tuple<index_t, index_t, index_t, shape_t, shape_t, shape_t>
       index_shape_type;
 
   typedef typename std::pair<index_shape_type, std::vector<T>> hmat_type;
 
   mps() {}
 
-  void load(std::string filename){};
-  void save(std::string filename){};
+  void load(std::string filename) { (void)filename; };
+  void save(std::string filename) { (void)filename; };
 
-  void from_std(hmat_type mps_in){};
+  void from_std(hmat_type mps_in) { (void)mps_in; };
   hmat_type to_std() { return {{0, 0, 0, 0, 0, 0}, {0, 1, 2, 3, 4}}; };
 
 private:

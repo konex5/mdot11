@@ -30,7 +30,8 @@ option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
 option(PROJECT_CODE_COVERAGE "Sanitizer TSAN" OFF)
 option(PROJECT_DOCUMENTATION "Build Project Documentation" OFF)
 
-set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)
+set(PROJECT_CXX_FLAGS_DEBUG -g -Wall -Wextra -fno-omit-frame-pointer
+                            -fno-inline)
 set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
 set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
 set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE} -g)

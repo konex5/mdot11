@@ -12,7 +12,7 @@
 // using namespace fhmdot::hmatrix;
 
 namespace pyhmatrix {
-template <class Q, typename T> class pymps : fhmdot::hmatrix::mps<Q, T> {
+template <class Q, typename T> class pymps : public fhmdot::hmatrix::mps<Q, T> {
 public:
   typedef Q qnum_type;
   typedef T value_type;
@@ -29,10 +29,11 @@ public:
 
   pymps(){
       // pyhmat_type pymps_in
+      // pyhmat_type pymps_in
       // from_python(pymps_in);
   };
 
-  void from_python(pyhmat_type mps_in){};
+  void from_python(pyhmat_type mps_in) { (void)mps_in; };
   pyhmat_type to_python(){};
 };
 
