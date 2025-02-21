@@ -28,7 +28,7 @@ option(PROJECT_PYTHON "Build Python Wrapper (pybind)" ON)
 option(PROJECT_VALIDATION "Build Validation" OFF)
 
 set(PROJECT_CXX_FLAGS -Wall -Wextra)
-set(PROJECT_CXX_FLAGS_DEBUG -g -fno-inline -fno-omit-frame-pointer) # -pedantic
+set(PROJECT_CXX_FLAGS_DEBUG -g -O0 -fno-inline -fno-omit-frame-pointer) # -pedantic
 # set(PROJECT_CXX_FLAGS_RELWITHDEBUG -g -O2) set(PROJECT_CXX_FLAGS_RELEASE -O3)
 # set(PROJECT_CXX_FLAGS_MINSIZERELEASE -O2) -fno-inline)
 # set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
@@ -51,6 +51,7 @@ find_package(
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
 if(${PROJECT_PYTHON})
+  find_package(Python COMPONENTS Interpreter Development)
   # * Pybind11
   find_package(
     Python
