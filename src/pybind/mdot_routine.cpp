@@ -5,24 +5,10 @@
 #include "mdot/include/babel_type.hpp"
 #include "mdot/include/routine/interface.hpp"
 #include "mdot/include/routine/minimize.hpp"
+
+#include "pybind/include/pybabel_type.hpp"
 #include "pybind/include/translate.hpp"
 
-namespace py = pybind11;
-
-template <typename T> using numpy_array = py::array_t<T, py::array::c_style>;
-
-using pydmbloc_type =
-    std::map<std::tuple<uint16_t, uint8_t, uint16_t>, numpy_array<dnum_t>>;
-
-using pydgbloc_type = std::map<std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>,
-                               numpy_array<dnum_t>>;
-
-using pydtbloc_type = std::map<std::tuple<uint16_t, uint8_t, uint8_t, uint16_t>,
-                               numpy_array<dnum_t>>;
-
-using pydmenvbloc_type = std::map<
-    std::tuple<uint16_t, uint8_t, uint16_t, uint16_t, uint8_t, uint16_t>,
-    numpy_array<dnum_t>>;
 /*
 pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs, pydmbloc_type rhs,
                                      bool conserve_left_right = false) {
@@ -53,6 +39,7 @@ pydtbloc_type py_mm_to_theta_with_gate(pydmbloc_type lhs, pydmbloc_type rhs,
   return dst_out;
 }
 */
+
 std::tuple<pydmbloc_type, pydmbloc_type, dnum_t>
 py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
             const dnum_t eps, const bool normalize, const int is_um,
@@ -107,7 +94,7 @@ pydmbloc_type py_minimize_lanczos_on_m(const pydmenvbloc_type env_bloc,
   dmbloc_t mp_in;
   translate_dmbloc_py2cpp(mp_in, mbloc);
   dmenvbloc_t env_bloc_in;
-  translate_dmenvbloc_py2cpp(env_bloc_in,env_bloc);
+  translate_dmenvbloc_py2cpp(env_bloc_in, env_bloc);
   dmbloc_t mp_out;
   mdot::lanczos_on_m(mp_out, env_bloc_in, mp_in, max_iteration, tolerance);
   pydmbloc_type dst_out;
