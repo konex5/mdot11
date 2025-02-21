@@ -9,15 +9,12 @@
 
 // #include "fhmdot/include/yofi.hpp"
 
-namespace pybind {
-
 namespace hmatrix {
 template <class Q, typename T> class mps {
 public:
   typedef Q qnum_type;
   typedef T value_type;
   typedef std::tuple<int, int, int> index_type;
-  // using numpy_array = py::array_t<T, py::array::c_style>;
 
   typedef pybind11::array_t<value_type, pybind11::array::c_style> numpy_array;
   typedef typename std::list<std::pair<index_type, numpy_array>> hmat_type;
@@ -51,4 +48,3 @@ private:
 };
 
 } // namespace hmatrix
-} // namespace pybind
