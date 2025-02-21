@@ -12,6 +12,7 @@
 
 
 #include "mdot/include/operators.hpp"
+#include "mdot/include/operators_static.hpp"
 
 namespace py = pybind11;
 
@@ -55,14 +56,18 @@ pydblocs_type single_operator_re(std::string name, std::string qbasis) {
 }
 
 numpy_array<dnum_t> single_operator_r(std::string name, std::string qbasis) {
-    //mdot::
-    auto test = single_operator_real(name,qbasis);
-    auto op = std::get<0>(test)[{0,0}];
-    std::size_t n = op.size();
-    auto ptr = op.data();
-    auto deallocator = py::capsule(ptr, [](void *f) { auto foo = reinterpret_cast<std::vector<dnum_t> *>(f);  delete foo; });
-    numpy_array<dnum_t> np_out(n, ptr, deallocator);
     
+    py::ssize_t ndim = mdot::real_sh_operators_crtp<mdot::sh_id_no>::size;
+    auto arr = mdot::real_sh_operators_crtp<mdot::sh_id_no>::array;
+    std::vector<py::ssize_t> shape = {mdot::real_sh_operators_crtp<mdot::sh_id_no>::shape[0],mdot::real_sh_operators_crtp<mdot::sh_id_no>::shape[1]};
+    //
+    std::vector<dnum_t> vec(arr.data(),arr.data()+ndim);
+    for (int i=0;i<4;i++)
+        std::cout << vec[i] << std::endl;
+    
+    auto deallocator = py::capsule(&vec, [](void *f) {  auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(f);  vec_ptr->clear(); });
+    numpy_array<dnum_t> np_out(ndim, vec.data(), deallocator);
+    np_out.resize(shape);
     return np_out;
 }
 
