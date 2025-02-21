@@ -6,22 +6,35 @@
 namespace fhmdot
 {
 
-  namespace fheader
-  {
+      namespace fheader
+      {
 
-    const std::string static version()
-    {
-      return "V:@PROJECT_VERSION@";
-    }
-    const std::string static msg_float_precision()
-    {
-      return "F:@FLOAT_PRECISION@";
-    }
-    const std::string static msg_complex_precision()
-    {
-      return "C:@CMPLX_PRECISION@";
-    }
+            const std::string static version()
+            {
+                  return "V:@PROJECT_VERSION@";
+            }
+            const std::string static precision()
+            {
+#ifndef FLOAT_PRECISION
+                  return "P:T";
+#else
+                  return "P:F";
+#endif
+            }
+            const std::string static text(bool is_complex)
+            {
+                  auto head = version() + "," + precision() + ",";
+                  if (is_complex)
+                  {
+                        head.append("C:T");
+                  }
+                  else
+                  {
+                        head.append("C:F");
+                  }
+                  return head;
+            }
 
-  } // namespace fheader
+      } // namespace fheader
 
 } // namespace fhmdot
