@@ -97,6 +97,7 @@ mkCustomShell {
   ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ black pythonEnv sphinx yapf ];
 
   shellHook = ''
+    export HOME=$(pwd);
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
   '';
 }
