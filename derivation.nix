@@ -3,15 +3,15 @@
 , boost17x
 , cmakeMinimal
 , mdot
+, nix-gitignore
 , ninja
 , numpy ? null
 , pybind11 ? null
 , pytest ? null
-, src ? ./.
 , version ? "0.0.1"
 }:
 let
-  
+
 in
 #{
 
@@ -41,8 +41,9 @@ in
 
 buildPythonPackage {
   name = "pyfhmdot-${version}";
-  inherit src;
   inherit version;
+  src = nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.;
+
   format = "other";
 
   nativeBuildInputs = [ cmakeMinimal ninja ];
