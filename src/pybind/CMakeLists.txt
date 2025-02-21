@@ -1,5 +1,5 @@
 # * BUILD
-pybind11_add_module(fhm wrapper.cpp)
+pybind11_add_module(example example.cpp)
 
 # * INSTALLATION
-install(TARGETS fhm DESTINATION bin)
+install(TARGETS example DESTINATION bin)

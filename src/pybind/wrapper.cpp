@@ -7,8 +7,8 @@
 #include "pybind/pyhmatrix.hpp"
 #include "pybind/utils.hpp"
 
-#include "fhmdot/include/babel_type.hpp"
-#include "fhmdot/include/qnum.hpp"
+// #include "fhmdot/include/babel_type.hpp"
+#include "fhmdot/utils/qnum.hpp"
 
 using namespace fhmdot::qnum;
 namespace py = pybind11;

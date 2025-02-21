@@ -5,7 +5,7 @@
 # * Objects
 
 # * Libraries
-set(libraries gate sweep variational)
+set(libraries sweep variational)
 foreach(library ${libraries})
   if(${PROJECT_STATIC})
     add_library(${library} STATIC core/${library}.cpp)
