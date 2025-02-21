@@ -13,7 +13,7 @@ namespace po = boost::program_options;
 int main(int argc, char *argv[]) {
   boost::filesystem::path hamiltonian_path;
   boost::filesystem::path output_path;
-  
+
   try {
 
     po::options_description desc("cli, create_maximal_entangled_state");
@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    hamiltonian_path = boost::filesystem::path(
-        vm["hamiltonian"].as<std::string>());
+    hamiltonian_path =
+        boost::filesystem::path(vm["hamiltonian"].as<std::string>());
     output_path = boost::filesystem::path(vm["output"].as<std::string>());
 
     if (!boost::filesystem::exists(hamiltonian_path)) {
@@ -62,8 +62,7 @@ int main(int argc, char *argv[]) {
   }
 
   auto model_info = get_model_info(hamiltonian_path);
-  //auto model_info = set_model_info(hamiltonian_path);
-
+  // auto model_info = set_model_info(hamiltonian_path);
 
   return 0;
 }
