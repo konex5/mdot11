@@ -2,29 +2,26 @@
 , buildPythonPackage ? null
 , boost17x
 , cmakeMinimal
-  # , mdot
 , lapack
-, nix-gitignore
+, mdot
 , ninja
 , numpy ? null
 , pybind11 ? null
 , pytest ? null
+, src ? "./."
 , tbb
 , version ? "0.0.1"
 }:
-let
-
-in
 
 buildPythonPackage {
   name = "mdotbind-${version}";
   inherit version;
-  src = nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.;
+  inherit src;
 
   format = "other";
 
   nativeBuildInputs = [ cmakeMinimal ninja ];
-  buildInputs = [ boost17x pybind11 lapack tbb ];
+  buildInputs = [ boost17x mdot pybind11 lapack tbb ];
   propagatedBuildInputs = [ numpy ];
   checkInputs = [ pytest ];
 
