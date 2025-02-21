@@ -14,6 +14,9 @@ template <typename T> using numpy_array = py::array_t<T, py::array::c_style>;
 using pydmbloc_type =
     std::map<std::tuple<uint16_t, uint8_t, uint16_t>, numpy_array<dnum_t>>;
 
+using pydgbloc_type =
+    std::map<std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>, numpy_array<dnum_t>>;
+
 using pydtbloc_type = std::map<std::tuple<uint16_t, uint8_t, uint8_t, uint16_t>,
                                numpy_array<dnum_t>>;
 
@@ -29,6 +32,21 @@ void translate_dmbloc_py2cpp(dmbloc_t &target_cpp, pydmbloc_type src_py) {
     target_cpp[src_key] = {target_shape, target_array};
   }
 }
+
+void translate_dgbloc_py2cpp(dgbloc_t &target_cpp, pydgbloc_type src_py) {
+  for (auto &[src_key, src_value] : src_py) {
+    auto src_shape = src_value.shape();
+    g_shape_t target_shape = std::tuple<std::size_t,std::size_t, std::size_t, std::size_t>(
+        static_cast<std::size_t>(src_shape[0]),
+        static_cast<std::size_t>(src_shape[1]),
+        static_cast<std::size_t>(src_shape[2]),
+        static_cast<std::size_t>(src_shape[3]));
+    std::vector<dnum_t> target_array(src_value.data(),
+                                     src_value.data() + src_value.size());
+    target_cpp[src_key] = {target_shape, target_array};
+  }
+}
+
 
 void translate_dmbloc_cpp2py(pydmbloc_type &target_py, dmbloc_t src_cpp) {
   for (auto &[src_key, src_value] : src_cpp) {
