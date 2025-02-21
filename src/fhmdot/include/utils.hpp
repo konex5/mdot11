@@ -22,10 +22,6 @@ template <typename T> constexpr bool is_float() {
   }
 }
 
-constexpr bool is_floating_precision() {
-  return std::is_same<float, data_t>::value;
-}
-
 } // namespace utils
 
 } // namespace fhmdot

@@ -3,7 +3,7 @@
 #include <pybind11/stl.h>
 
 #include "fhmdot/include/babel_type.hpp"
-#include "fhmdot/utils/utils.hpp"
+#include "pybind/utils.hpp"
 
 namespace py = pybind11;
 
@@ -24,7 +24,7 @@ PYBIND11_MODULE(fhm, m) {
             "from MPS)";
   m.def("check", &check,
         "A numpy view of num_t without first and last element");
-  m.def("is_floating_precision", &fhmdot::utils::is_floating_precision,
+  m.def("is_floating_precision", &is_floating_precision,
         "check if library precision is fixed to float 32 (if not, float64 is "
         "used)");
 }
