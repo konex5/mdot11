@@ -102,7 +102,7 @@ in
     echo "You may want to import the pybind11 library during development"
     echo "(assuming the project was compiled in ./b*) :"
     echo ""
-    echo "export PYTHONPATH=\$(readlink -f \$PWD/b*/src/pybind_* | tr '\\n' ':'):\$PYTHONPATH"
+    echo "export PYTHONPATH=\$(readlink -f \$PWD/b*/src/pybind* | tr '\\n' ':'):\$PYTHONPATH"
     echo ""
   '';
 }

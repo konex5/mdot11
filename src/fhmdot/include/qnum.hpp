@@ -5,10 +5,10 @@
 
 #include "babel_type.hpp"
 
-template <class T> struct quantum_number_crtp {
-  static constexpr index_t dim = T::qn_dim;
-  inline static index_t sum(index_t q1, index_t q2) { return T::qsum(q1, q2); }
-  inline static index_t sub(index_t q1, index_t q2) { return T::qsub(q1, q2); }
+template <class Q> struct quantum_number_crtp {
+  static constexpr index_t dim = Q::qn_dim;
+  inline static index_t sum(index_t q1, index_t q2) { return Q::qsum(q1, q2); }
+  inline static index_t sub(index_t q1, index_t q2) { return Q::qsub(q1, q2); }
 };
 
 struct sh_none : quantum_number_crtp<sh_none> {
