@@ -1,11 +1,20 @@
-{ pkgs ? import <nixpkgs> { config.allowUnfree = true; } }:
+{ pkgs ? import
+    (
+      builtins.fetchTarball {
+        url = "https://github.com/NixOS/nixpkgs/archive/e387bb3a4d0d63446086abbfbe2117e80fe3522a.tar.gz";
+        sha256 = "sha256:1hhla9k5v0ri76vcaz7pmkwc7kqj45hca3ygfd1c1lsbg01fnvbp";
+      }
+    )
+    {
+      config.allowUnfree = true;
+    }
+, clangSupport ? false
+}:
 
 with pkgs;
 assert hostPlatform.isx86_64;
 
 let
-  clangSupport = false;
-  cudaSupport = false;
 
   mkCustomShell = mkShell.override { stdenv = if clangSupport then clangStdenv else gccStdenv; };
 
@@ -26,78 +35,48 @@ let
       {
         name = "cmake-tools";
         publisher = "ms-vscode";
-        version = "1.7.3";
-        sha256 = "6UJSJETKHTx1YOvDugQO194m60Rv3UWDS8UXW6aXOko=";
+        version = "1.10.5";
+        sha256 = "T57uCK1rGe3dBnYbK7QhN2NG3NwTEZm0/EY8S1Pyf7I=";
       }
       {
         name = "emacs-mcx";
         publisher = "tuttieee";
-        version = "0.31.0";
-        sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
+        version = "0.41.2";
+        sha256 = "LCnPyvl0YLPgIaBODwJGQ1Nubx1rhASexIKbuijJq1M=";
       }
-      # {
-      #   name = "restructuredtext";
-      #   publisher = "lextudio";
-      #   version = "135.0.0";
-      #   sha256 = "yjPS9fZ628bfU34DsiUmZkOleRzW6EWY8DUjIU4wp9w=";
-      # }
-      # {
-      #   name = "vscode-clangd";
-      #   publisher = "llvm-vs-code-extensions";
-      #   version = "0.1.12";
-      #   sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
-      # }
     ];
   };
 
   pythonEnv = python3.withPackages (ps: with ps;
-    [ numpy pybind11 ] ++ [
-      #------------#
-      # pydevtools #
-      #------------#
-      black
-      flake8
-      ipython
-      mypy
-      pylint
-      pytest
-      yapf
-      #---------------#
-      # documentation #
-      #---------------#  
-      sphinx
-      sphinx_rtd_theme
-      nbformat
-      nbconvert
-      nbsphinx
-    ] ++ lib.optionals (!isPy39) [ python-language-server ]);
-
+    [ numpy pybind11 pytest ] # ++ [ ipython mypy pylint ]
+  );
 in
 mkCustomShell {
-  buildInputs = [ boost17x spdlog tbb ] ++ [ pythonEnv ]; # lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ]; # mkl
+  buildInputs = [ boost spdlog tbb ]; # mkl
 
-  nativeBuildInputs = [ cmake gnumake ninja ] ++ [ # mkl
+  nativeBuildInputs = [ cmake gnumake ninja ] ++ [
     bashCompletion
     bashInteractive
+    black
     cacert
     clang-tools
     cmake-format
     cmakeCurses
-    cppcheck
+    # cppcheck
     emacs-nox
-    fmt
-    gdb
     git
     # hyperfine
     less
-    llvm
-    more
+    # llvm
+    # more
     nixpkgs-fmt
     pkg-config
-  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ black pythonEnv sphinx ];
+  ] ++ lib.optionals (!clangSupport) [ gdb ] ++ lib.optionals (clangSupport) [ lldb ] ++
+    lib.optionals (hostPlatform.isLinux) [ vscodeExt ] ++ [ pythonEnv ];
 
   shellHook = ''
-    export HOME=$(pwd);
+    mkdir -p $(pwd)/.trash_config/
+    export HOME=$(pwd)/.trash_config;
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
   '';
 }

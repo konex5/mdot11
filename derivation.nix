@@ -1,6 +1,5 @@
 { stdenv
 , buildPythonPackage ? null
-, src
 , boost17x
 , cmakeMinimal
 , ninja
@@ -12,6 +11,7 @@
 , tbb
 }:
 let
+  src = ./.;
   version = "0.0.0";
 in
 {
