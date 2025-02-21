@@ -97,7 +97,8 @@ with pkgs;
       pkg-config
       emacs-nox
       vim
-      pandoc ] ++ lib.optionals (hostPlatform.isLinux) [
+      pandoc
+    ] ++ lib.optionals (hostPlatform.isLinux) [
       typora
       vscodeExt
     ] ++ [ black jupyter pythonEnv sphinx yapf ];

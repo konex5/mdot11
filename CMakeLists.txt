@@ -29,10 +29,10 @@ option(PROJECT_TBBMALLOC_PROXY
        "enable tbb_malloc_proxy linking (conflicts with pybind)" OFF)
 
 # set(PROJECT_CXX_FLAGS_DEBUG -g -Wall -Wextra -fno-omit-frame-pointer
-#                             -fno-inline)
-# set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
-# set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
-# set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE} -g)
+# -fno-inline) set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd
+# -mftree-vectorize set(PROJECT_CXX_FLAGS_RELWITHDEBUG
+# ${PROJECT_CXX_FLAGS_RELEASE} -g) set(PROJECT_CXX_FLAGS_MINSIZERELEASE
+# ${PROJECT_CXX_FLAGS_RELEASE} -g)
 
 add_compile_options(
   ${CMAKE_CXX_FLAGS}

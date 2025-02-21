@@ -12,7 +12,8 @@
 }:
 let
   version = "0.0.0";
-in {
+in
+{
 
   libfhmdot = stdenv.mkDerivation {
     name = "libfhmdot";
@@ -20,7 +21,7 @@ in {
 
     nativeBuildInputs = [ cmakeMinimal ninja ];
     buildInputs = [ boost17x ];
-  
+
     cmakeFlags = [
       "-DCMAKE_BUILD_TYPE=Release"
       "-DPROJECT_TESTS=On"
@@ -29,10 +30,10 @@ in {
     ];
     ninjaFlags = [ "-v" ];
     makeFlags = [ "VERBOSE=1" ];
-  
+
     enableParallelBuilding = true;
     enableParallelChecking = true;
-  
+
     installPhase = "ninja install";
   };
 
@@ -41,12 +42,12 @@ in {
     version = "0.0.0";
     format = "other";
     inherit src;
-  
+
     nativeBuildInputs = [ cmakeMinimal ninja ];
     buildInputs = [ boost17x pybind11 ];
     propagatedBuildInputs = [ numpy ];
     checkInputs = [ pytest ];
-  
+
     cmakeFlags = [
       "-DCMAKE_BUILD_TYPE=Release"
       "-DPROJECT_TESTS=ON"
@@ -56,10 +57,10 @@ in {
     ];
     ninjaFlags = [ "-v" ];
     makeFlags = [ "VERBOSE=1" ];
-  
+
     enableParallelBuilding = true;
     enableParallelChecking = true;
-  
+
     installPhase = "ninja install";
-    };
+  };
 }
