@@ -1,4 +1,4 @@
-# Fast Hilbert Matrix :arrow_backward: :zap: :red_circle: :zap: :arrow_forward:
+# Matrix :arrow_backward: :zap: :red_circle: :zap: :arrow_forward: (11)
 
 Welcome to `mdot11` (Matrix​ :arrow_backward: :zap:
 :red_circle: :zap: :arrow_forward:), a quantum number agnostic routine
@@ -57,7 +57,9 @@ cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMak
 
 ## Code Helper
 
+```bash
 export CPLUS_INCLUDE_PATH=</PATH/TO/mdot/src>
 export PYTHONPATH=</PATH/TO/build/src/pybind>:$PYTHONPATH
 export PYTHONPATH=</PATH/TO/pyfhmdot>:$PYTHONPATH
 export OMP_NUM_THREADS=4
+```
