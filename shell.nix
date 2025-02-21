@@ -1,8 +1,8 @@
 { pkgs ? import
     (
       builtins.fetchTarball {
-        url = "https://github.com/NixOS/nixpkgs/archive/c00959877fb06b09468562518b408acda886c79e.tar.gz";
-        sha256 = "sha256:02anj9mbzy45bszlmv7k42mb5y7yj2lxc5vpbxgd3f5qljn5ih7y";
+        url = "https://github.com/NixOS/nixpkgs/archive/63dacb46bf939521bdc93981b4cbb7ecb58427a0.tar.gz";
+        sha256 = "sha256:1lr1h35prqkd1mkmzriwlpvxcb34kmhc9dnr48gkm8hh089hifmx";
       }
     )
     { }
@@ -33,19 +33,20 @@ let
     # pyls-mypy
     pytest
     yapf
+    python-lsp-server
     #---------------#
     # documentation #
     #---------------#
-    jupyter-sphinx
-    sphinx
-    sphinx_rtd_theme
+    # jupyter-sphinx
+    # sphinx
+    # sphinx_rtd_theme
     # nbformat
     # nbconvert
-  ] ++ lib.optionals (!isPy39) [ python-language-server ]);
+  ]);
 in
 mkShell {
-  nativeBuildInputs = [ bashCompletion bashInteractive cmakeMinimal ninja pythonEnv ];
-  buildInputs = [ boost17x lapack tbb ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
+  nativeBuildInputs = [ cmakeMinimal ninja pythonEnv ];
+  buildInputs = [ boost lapack tbb ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
 
   LANG = "en_US.UTF-8";
 

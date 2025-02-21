@@ -1,6 +1,6 @@
 { stdenv
 , buildPythonPackage ? null
-, boost17x
+, boost
 , cmakeMinimal
 , lapack
 , mdot
@@ -21,7 +21,7 @@ buildPythonPackage {
   format = "other";
 
   nativeBuildInputs = [ cmakeMinimal ninja ];
-  buildInputs = [ boost17x mdot pybind11 lapack tbb ];
+  buildInputs = [ boost mdot pybind11 lapack tbb ];
   propagatedBuildInputs = [ numpy ];
   checkInputs = [ pytest ];
 
