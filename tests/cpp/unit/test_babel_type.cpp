@@ -1,7 +1,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "fhmdot/include/babel_type.hpp"
+#include "fhmdot/utils/babel_type.hpp"
 
 BOOST_AUTO_TEST_CASE(unittest_babel_type) {
   using d = real_type<double>;

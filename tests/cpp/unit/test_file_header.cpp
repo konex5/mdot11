@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-#include "fhmdot/include/file_header.hpp"
+#include "fhmdot/utils/file_header.hpp"
 
 BOOST_AUTO_TEST_CASE(unittest_file_header_version) {
   std::string version_header = fhmdot::fheader::version();

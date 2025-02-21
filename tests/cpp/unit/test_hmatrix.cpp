@@ -2,8 +2,8 @@
 #include <boost/test/unit_test.hpp>
 #include <complex>
 
-#include "fhmdot/include/hmatrix.hpp"
-#include "fhmdot/include/qnum.hpp"
+#include "fhmdot/utils/hmatrix.hpp"
+#include "fhmdot/utils/qnum.hpp"
 
 using namespace fhmdot::hmatrix;
 using namespace fhmdot::qnum;

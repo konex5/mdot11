@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-#include "fhmdot/include/utils.hpp"
+#include "fhmdot/utils/utils.hpp"
 
 #include <complex>
 

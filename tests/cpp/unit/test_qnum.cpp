@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 // #include "boost/list.hpp"
 
-#include "fhmdot/include/qnum.hpp"
+#include "fhmdot/utils/qnum.hpp"
 
 using namespace fhmdot::qnum;
 

@@ -3,7 +3,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include "fhmdot/include/yofi.hpp"
+#include "fhmdot/utils/yofi.hpp"
 
 using namespace fhmdot::yofi;
 

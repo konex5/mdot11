@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "fhmdot/include/babel_type.hpp"
+#include "fhmdot/utils/babel_type.hpp"
 
 namespace fhmdot {
 
