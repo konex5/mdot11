@@ -29,7 +29,7 @@ pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs,
   return dst_out;
 }
 
-pydtbloc_type py_routine(pydmbloc_type lhs,
+std::pair<pydmbloc_type,pydmbloc_type> py_routine(pydmbloc_type lhs,
                             pydmbloc_type rhs,
                             bool conserve_left_right = false) {
   dmbloc_t tmp_lhs, tmp_rhs;
@@ -37,13 +37,15 @@ pydtbloc_type py_routine(pydmbloc_type lhs,
   translate_dmbloc_py2cpp(tmp_rhs, rhs);
   dtbloc_t tmp_dst;
   mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, conserve_left_right);
-  dnum_t dw;
-  index_t chi_max;
+  dnum_t dw = 0;
+  index_t chi_max=8;
   dnum_t eps=1e-8;
   std::cout << std::endl <<  std::endl << "okay" << std::endl;
-  mdot::theta_to_mm(tmp_dst,tmp_lhs,tmp_rhs,dw,chi_max,true,true, 1,eps);
-  pydtbloc_type dst_out;
-  translate_dtbloc_cpp2py(dst_out, tmp_dst);
+  mdot::theta_to_mm(tmp_dst,tmp_lhs,tmp_rhs,dw,chi_max,true,1, 1,eps);
+  std::cout << std::endl <<  std::endl << "okay" << std::endl;
+  std::pair<pydmbloc_type,pydmbloc_type> dst_out;
+  translate_dmbloc_cpp2py(dst_out.first, tmp_lhs);
+  translate_dmbloc_cpp2py(dst_out.second, tmp_rhs);
   return dst_out;
 }
 
