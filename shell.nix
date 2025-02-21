@@ -66,15 +66,17 @@ let
       nbconvert
       nbsphinx
     ]);
-in (pkgs.mkShell.override { inherit stdenv; }) rec {
+in
+(pkgs.mkShell.override { inherit stdenv; }) rec {
   buildInputs = (with pkgs;
     [ boost17x spdlog ] ++ [
-      zstd zlib # stdenv.cc.cc.lib
+      zstd
+      zlib # stdenv.cc.cc.lib
     ] ++ [ pythonEnv ]);
   nativeBuildInputs = (with pkgs;
     [ cmake ninja ] ++ [
       # stdenv.cc.cc
-      # libcxxabi	      
+      # libcxxabi        
       # astyle
       bashCompletion
       cacert
@@ -85,7 +87,7 @@ in (pkgs.mkShell.override { inherit stdenv; }) rec {
       gdb
       git
       gnumake
-      nixfmt
+      nixpkgs-fmt
       pkg-config
       emacs-nox
       vscodeExt

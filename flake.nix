@@ -23,21 +23,22 @@
               };
               project_dev = python-self.callPackage ./shell.nix { };
             };
-          in {
+          in
+          {
             python37 = pkgs-super.python37.override (old: {
               packageOverrides =
                 composeExtensions (old.packageOverrides or (_: _: { }))
-                pythonPackageOverrides;
+                  pythonPackageOverrides;
             });
             python38 = pkgs-super.python38.override (old: {
               packageOverrides =
                 composeExtensions (old.packageOverrides or (_: _: { }))
-                pythonPackageOverrides;
+                  pythonPackageOverrides;
             });
             python39 = pkgs-super.python39.override (old: {
               packageOverrides =
                 composeExtensions (old.packageOverrides or (_: _: { }))
-                pythonPackageOverrides;
+                  pythonPackageOverrides;
             });
             python3 = pkgs-self.python38;
           };
@@ -47,7 +48,8 @@
           config = { allowUnfree = true; };
           overlays = [ overlay ];
         };
-      in {
+      in
+      {
         packages = {
           golden_binding = pkgs.python3Packages.project_gcc;
           golden_binding_clang = pkgs.python3Packages.project_clang;

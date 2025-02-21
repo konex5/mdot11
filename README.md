@@ -35,3 +35,18 @@ The interface uses three objects, two similar hierarchical matrices (`A` and `B`
 
 
 
+
+
+## Code Snippets
+
+One line code formatter for C/C++ projects
+
+```bash
+black .
+
+nixpkgs-fmt .
+
+clang-format -i $(find . -path "./build*" -prune  -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp")
+
+cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMakeLists.txt")
+```
