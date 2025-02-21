@@ -1,0 +1,3 @@
+
+def automation():
+    print("test")
