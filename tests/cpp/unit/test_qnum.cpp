@@ -5,8 +5,7 @@
 
 // using namespace qnum;
 
-BOOST_AUTO_TEST_CASE(unittest_qnum_sh)
-{
+BOOST_AUTO_TEST_CASE(unittest_qnum_sh) {
   BOOST_CHECK(quantum_number_crtp<sh_none>::dim == 1);
   BOOST_CHECK(quantum_number_crtp<sh_none>::sum(2, 3) == 0);
   BOOST_CHECK(quantum_number_crtp<sh_none>::sum(7, 2) == 0);
