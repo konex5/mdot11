@@ -17,8 +17,8 @@ namespace py = pybind11;
 template <typename T>
 using numpy_array = py::array_t<T, py::array::c_style>;
 
-using pydblocs_type = std::map<std::tuple<int64_t, int64_t>, numpy_array<double>>;
-using pyzblocs_type = std::map<std::tuple<int64_t, int64_t>, numpy_array<double>>;
+using pydblocs_type = std::map<std::tuple<uint8_t, uint8_t>, numpy_array<double>>;
+using pyzblocs_type = std::map<std::tuple<uint8_t, uint8_t>, numpy_array<double>>;
 
 
 pydblocs_type single_operator_re(std::string name, std::string qbasis) {
@@ -28,17 +28,17 @@ pydblocs_type single_operator_re(std::string name, std::string qbasis) {
     auto blocs = std::get<0>(test);
     //
     pydblocs_type output;
-    std::tuple<int64_t, int64_t> indices;
+    std::tuple<uint8_t, uint8_t> indices;
     std::vector<dnum_t> vec_arr;
     //
     
     for (auto const& x : blocs) {
-        indices = {1,1};//{reinterpret_cast<int64_t>(x.first.first),reinterpret_cast<int64_t>(x.first.second)};
+        indices = {std::get<0>(x.first),std::get<1>(x.first)};
         vec_arr = x.second;
         std::size_t n = vec_arr.size();
         auto ptr = vec_arr.data();
-        auto fake_deallocator = py::capsule(ptr, [](void *ptr) { });
-        numpy_array<dnum_t> np_out(n, ptr, fake_deallocator);
+        auto deallocator = py::capsule(&vec_arr, [](void* ptr) { auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr); vec_ptr->clear(); });
+        numpy_array<dnum_t> np_out(n, ptr, deallocator);
         output[indices] = np_out;
     }
     
