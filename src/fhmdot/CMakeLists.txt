@@ -17,10 +17,10 @@ foreach(library ${libraries})
 endforeach()
 
 # * Executable
-set(clicommands fhmdot_exe)
+set(clicommands create_maximal_entangled_state fhmdot_exe)
 foreach(clicommand ${clicommands})
   add_executable(cli_${clicommand} cli/${clicommand}.cpp)
-  # target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES})
+  target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES} Boost::filesystem Boost::program_options)
   install(
     TARGETS cli_${clicommand}
     CONFIGURATIONS Release
