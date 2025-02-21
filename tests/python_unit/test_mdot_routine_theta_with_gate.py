@@ -81,3 +81,4 @@ def test_dummy_bench_mm_to_theta_with_gate(make_random_blocs, make_gate):
 
         # wrong for multithreading and bigger size
         assert np.average(cpp_measure) < np.average(py_measure)
+        # one more transpose in python, so small improvement
