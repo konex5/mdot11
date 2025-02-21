@@ -8,7 +8,7 @@ project(
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "fhmdot - Fast Hilbert Matrix Dot")
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -27,23 +27,16 @@ option(PROJECT_BENCHMARK "Build Python Tests" OFF)
 option(PROJECT_PYTHON "Build Python Wrapper (pybind)" OFF)
 option(PROJECT_VALIDATION "Build Validation" OFF)
 option(PROJECT_TBBMALLOC_PROXY
-       "enable tbb_malloc_proxy linking (conflicts with pybind)" OFF)
+       "enable tbb_malloc_proxy linking (pybind conflicts)" OFF)
 
-set(PROJECT_CXX_FLAGS_DEBUG
-    -fpic
-    -g
-    -O0
-    -Wall
-    -Wextra
-    -fno-inline
-    -fno-omit-frame-pointer)
-# -fno-inline) set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd
-# -mftree-vectorize set(PROJECT_CXX_FLAGS_RELWITHDEBUG
-# ${PROJECT_CXX_FLAGS_RELEASE} -g) set(PROJECT_CXX_FLAGS_MINSIZERELEASE
-# ${PROJECT_CXX_FLAGS_RELEASE} -g)
+set(PROJECT_CXX_FLAGS -Wall -Wextra)
+set(PROJECT_CXX_FLAGS_DEBUG -g -fno-inline -fno-omit-frame-pointer) # -pedantic
+# set(PROJECT_CXX_FLAGS_RELWITHDEBUG -g -O2) set(PROJECT_CXX_FLAGS_RELEASE -O3)
+# set(PROJECT_CXX_FLAGS_MINSIZERELEASE -O2) -fno-inline)
+# set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
 
 add_compile_options(
-  ${CMAKE_CXX_FLAGS}
+  ${PROJECT_CXX_FLAGS}
   "$<$<CONFIG:Debug>:${PROJECT_CXX_FLAGS_DEBUG}>"
   "$<$<CONFIG:Release>:${PROJECT_CXX_FLAGS_RELEASE}>"
   "$<$<CONFIG:RelWithDebug>:${PROJECT_CXX_FLAGS_RELWITHDEBUG}>"
