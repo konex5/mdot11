@@ -140,6 +140,18 @@ Or you can install from source with:
 
     python setup.py install
 
+=============
+Code Snippets
+=============
+
+.. code:: shell
+
+    nixfmt $(find -name "*.nix")
+
+    clang-format -i $(find . -path "./build*" -prune  -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp")
+
+    cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMakeLists.txt")
+
 =======
 License
 =======

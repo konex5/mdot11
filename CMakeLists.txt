@@ -10,7 +10,7 @@ project(
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "Hybrid C++/Python Golden Project")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # ##############################################################################
@@ -18,6 +18,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ##############################################################################
 
 option(PROJECT_TESTS "Build Cpp Tests" ON)
+option(PROJECT_PRECISION_FLOAT32 "Build with floating point 32" OFF)
+# option(PROJECT_QNUM "Build with spin sz=" 0.5)
+# option(PROJECT_QNUM_DOUBLED "Build for a doubled Hilbert space" ON)
 option(PROJECT_SANDBOX "Build Project Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Python Tests" OFF)
 option(PROJECT_VALIDATION "Build Python Validation" OFF)
