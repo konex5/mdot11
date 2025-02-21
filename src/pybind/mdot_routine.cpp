@@ -18,6 +18,10 @@ using pydgbloc_type = std::map<std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>,
 
 using pydtbloc_type = std::map<std::tuple<uint16_t, uint8_t, uint8_t, uint16_t>,
                                numpy_array<dnum_t>>;
+
+using pydmenvbloc_type = std::map<
+    std::tuple<uint16_t, uint8_t, uint16_t, uint16_t, uint8_t, uint16_t>,
+    numpy_array<dnum_t>>;
 /*
 pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs, pydmbloc_type rhs,
                                      bool conserve_left_right = false) {
@@ -70,11 +74,11 @@ py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
   return dst_out;
 }
 
-
 std::tuple<pydmbloc_type, pydmbloc_type, dnum_t>
-py_apply_gate_on_mm(pydmbloc_type lhs, pydmbloc_type rhs, const pydgbloc_type gate, const index_t chi_max,
-            const dnum_t eps, const bool normalize, const int is_um,
-            const int direction_right) {
+py_apply_gate_on_mm(pydmbloc_type lhs, pydmbloc_type rhs,
+                    const pydgbloc_type gate, const index_t chi_max,
+                    const dnum_t eps, const bool normalize, const int is_um,
+                    const int direction_right) {
   dmbloc_t lhs_in, rhs_in;
   dgbloc_t gate_in;
   translate_dmbloc_py2cpp(lhs_in, lhs);
@@ -95,14 +99,27 @@ py_apply_gate_on_mm(pydmbloc_type lhs, pydmbloc_type rhs, const pydgbloc_type ga
   return dst_out;
 }
 
+pydmbloc_type py_minimize_lanczos_on_m(const pydmenvbloc_type env_bloc,
+                                       pydmbloc_type mbloc,
+                                       const size_t max_iteration,
+                                       const dnum_t tolerance) {
+  dmbloc_t mp_in, mp_out;
+  translate_dmbloc_py2cpp(mp_in, mbloc);
+  // mdot::lanczos_on_m(mp_out, env_bloc_in, mp_in,max_iteration,tolerance)
+  pydmbloc_type dst_out;
+  translate_dmbloc_cpp2py(dst_out, mp_in);
+  return dst_out;
+}
+
 PYBIND11_MODULE(mdot_routine, m) {
   m.doc() = "routine to speedup code execution";
   m.def("apply_mm", &py_apply_mm, py::arg("mps_left"), py::arg("mps_right"),
         py::arg("chi_max"), py::arg("eps"), py::arg("normalize"),
         py::arg("is_um"), py::arg("direction_right"));
-  m.def("apply_gate_on_mm", &py_apply_gate_on_mm, py::arg("mps_left"), py::arg("mps_right"), py::arg("gate"),
-        py::arg("chi_max"), py::arg("eps"), py::arg("normalize"),
-        py::arg("is_um"), py::arg("direction_right"));
+  m.def("apply_gate_on_mm", &py_apply_gate_on_mm, py::arg("mps_left"),
+        py::arg("mps_right"), py::arg("gate"), py::arg("chi_max"),
+        py::arg("eps"), py::arg("normalize"), py::arg("is_um"),
+        py::arg("direction_right"));
   /*
   m.def("mm_to_theta_no_gate", &py_mm_to_theta_no_gate, py::arg("lhs_blocs"),
         py::arg("rhs_blocs"), py::arg("conserve_left_right") = false,
@@ -111,4 +128,9 @@ PYBIND11_MODULE(mdot_routine, m) {
         py::arg("lhs_blocs"), py::arg("rhs_blocs"), py::arg("gate_blocs"),
         py::arg("conserve_left_right") = false, "execute mm_to_theta_no_gate.");
   */
+  m.def("minimize_lanczos_on_m", &py_minimize_lanczos_on_m, py::arg("env_bloc"),
+        py::arg("mps"), py::arg("max_iteration"), py::arg("error_tolerance"));
+  // m.def("minimize_lanczos_on_mm", &py_minimize_lanczos_on_mm,
+  // py::arg("env_bloc"), py::arg("theta"), py::arg("max_iteration"),
+  // py::arg("error_tolerance"));
 }
