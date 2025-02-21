@@ -10,6 +10,7 @@ project(
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 
@@ -28,7 +29,14 @@ option(PROJECT_VALIDATION "Build Validation" OFF)
 option(PROJECT_TBBMALLOC_PROXY
        "enable tbb_malloc_proxy linking (conflicts with pybind)" OFF)
 
-# set(PROJECT_CXX_FLAGS_DEBUG -g -Wall -Wextra -fno-omit-frame-pointer
+set(PROJECT_CXX_FLAGS_DEBUG
+    -fpic
+    -g
+    -O0
+    -Wall
+    -Wextra
+    -fno-inline
+    -fno-omit-frame-pointer)
 # -fno-inline) set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd
 # -mftree-vectorize set(PROJECT_CXX_FLAGS_RELWITHDEBUG
 # ${PROJECT_CXX_FLAGS_RELEASE} -g) set(PROJECT_CXX_FLAGS_MINSIZERELEASE
