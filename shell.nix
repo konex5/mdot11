@@ -1,109 +1,100 @@
 { pkgs ? import <nixpkgs> { config.allowUnfree = true; } }:
 
+with pkgs;
+assert hostPlatform.isx86_64;
+
 let
   clangSupport = false;
   cudaSupport = false;
 
-  stdenv = (with pkgs; if clangSupport then clangStdenv else gccStdenv);
+  mkCustomShell = mkShell.override { stdenv = if clangSupport then clangStdenv else gccStdenv; };
 
-  pythonPackages = pkgs.python3Packages;
+  vscodeExt = vscode-with-extensions.override {
+    vscodeExtensions = with vscode-extensions; [
+      bbenoist.nix
+      eamodio.gitlens
+      ms-vscode.cpptools
+      ms-python.python
+      ms-python.vscode-pylance
+    ] ++ vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "cmake";
+        publisher = "twxs";
+        version = "0.0.17";
+        sha256 = "CFiva1AO/oHpszbpd7lLtDzbv1Yi55yQOQPP/kCTH4Y=";
+      }
+      {
+        name = "cmake-tools";
+        publisher = "ms-vscode";
+        version = "1.7.3";
+        sha256 = "6UJSJETKHTx1YOvDugQO194m60Rv3UWDS8UXW6aXOko=";
+      }
+      {
+        name = "emacs-mcx";
+        publisher = "tuttieee";
+        version = "0.31.0";
+        sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
+      }
+      {
+        name = "restructuredtext";
+        publisher = "lextudio";
+        version = "135.0.0";
+        sha256 = "yjPS9fZ628bfU34DsiUmZkOleRzW6EWY8DUjIU4wp9w=";
+      }
+      {
+        name = "vscode-clangd";
+        publisher = "llvm-vs-code-extensions";
+        version = "0.1.12";
+        sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
+      }
+    ];
+  };
 
-  vscodeExt = (with pkgs;
-    vscode-with-extensions.override {
-      vscodeExtensions = with vscode-extensions;
-        [
-          bbenoist.nix
-          eamodio.gitlens
-          ms-vscode.cpptools
-          ms-python.python
-          ms-python.vscode-pylance
-        ] ++ vscode-utils.extensionsFromVscodeMarketplace [
-          {
-            name = "cmake-tools";
-            publisher = "ms-vscode";
-            version = "1.7.3";
-            sha256 = "6UJSJETKHTx1YOvDugQO194m60Rv3UWDS8UXW6aXOko=";
-          }
-          {
-            name = "emacs-mcx";
-            publisher = "tuttieee";
-            version = "0.31.0";
-            sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
-          }
-          {
-            name = "cmake";
-            publisher = "twxs";
-            version = "0.0.17";
-            sha256 = "CFiva1AO/oHpszbpd7lLtDzbv1Yi55yQOQPP/kCTH4Y=";
-          }
-        ];
-    });
-  pythonEnv = (with pythonPackages; # note that checkInputs are missing!
+  pythonEnv = python3.withPackages (ps: with ps;
     [ numpy pybind11 ] ++ [
-      #------------#
-      # additional #
-      #------------#
-      decorator
-      pyjson5
-      toml
       #------------#
       # pydevtools #
       #------------#
+      black
+      flake8
       ipython
-      pip
-      pytest
       mypy
       pylint
-      flake8
+      pytest
       yapf
-      black
       #---------------#
       # documentation #
-      #---------------#      
+      #---------------#  
       sphinx
       sphinx_rtd_theme
       nbformat
       nbconvert
       nbsphinx
-    ] ++ pkgs.lib.optionals (!isPy39) [ python-language-server ]
-  );
-in
-with pkgs;
-(mkShell.override { inherit stdenv; }) rec {
-  buildInputs = [ boost17x tbb spdlog ] ++ [
-    # zstd zlib
-  ] ++ [ pythonEnv ] ++ lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
-  nativeBuildInputs =
-    [ cmake ninja ] ++ [
-      bash-completion
-      #fd
-      less
-      more
-      cacert
-      which
-    ] ++ [
-      # stdenv.cc.cc
-      # libcxxabi        
-      # astyle
-      clang-tools
-      cmake-format
-      cmakeCurses
-      emacs-nox
-      gdb
-      git
-      gnumake
-      llvm
-      nixpkgs-fmt
-      pkg-config
-      emacs-nox
-      vim
-      pandoc
-    ] ++ lib.optionals (hostPlatform.isLinux) [
-      typora
-      vscodeExt
-    ] ++ [ black jupyter pythonEnv sphinx yapf ];
+    ] ++ lib.optionals (!isPy39) [ python-language-server ]);
+    
+in mkCustomShell {
+  buildInputs = [ boost17x spdlog tbb ] ++ [ pythonEnv ]; # lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
+
+  nativeBuildInputs = [ cmake gnumake ninja ] ++ [
+    bashCompletion
+    bashInteractive
+    cacert
+    clang-tools
+    cmake-format
+    cmakeCurses
+    cppcheck
+    emacs-nox
+    fmt
+    gdb
+    git
+    less
+    llvm
+    more
+    nixpkgs-fmt
+    pkg-config
+  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ black pythonEnv sphinx yapf ];
+
   shellHook = ''
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
-    export PYTHONPATH=$PWD:$PYTHONPATH
   '';
 }

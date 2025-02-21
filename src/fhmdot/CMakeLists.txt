@@ -5,7 +5,7 @@
 # * Objects
 
 # * Libraries
-set(libraries apply_gate fhmdot_inspect dmrg)
+set(libraries apply_gate minimize_energy sweep)
 foreach(library ${libraries})
   if(${PROJECT_STATIC})
     add_library(${library} STATIC core/${library}.cpp)
