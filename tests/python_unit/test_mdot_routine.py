@@ -27,8 +27,9 @@ def test_mdot_routine_routine(make_random_blocs):
     mps_right = make_random_blocs(20, 1)
     import mdot_routine
     from pyfhmdot.algorithm import apply_mm
-    apply_mm(mps_left, mps_right,{"dw_one_serie":0},8,True,10**-8,is_um=True,conserve_left_right_before=False,direction_right=1)
-    left,right = mdot_routine.routine(mps_left, mps_right, True)
+    dw_dict = {"dw_one_serie":0}
+    apply_mm(mps_left, mps_right,dw_dict,8,True,10**-8,is_um=True,conserve_left_right_before=False,direction_right=1)
+    left,right,dw = mdot_routine.apply_mm(mps_left, mps_right, 8,True,10**-8,1,1)
     pass
 
 

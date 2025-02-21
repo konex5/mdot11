@@ -16,9 +16,8 @@ using pydmbloc_type =
 using pydtbloc_type = std::map<std::tuple<uint16_t, uint8_t, uint8_t, uint16_t>,
                                numpy_array<dnum_t>>;
 
-pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs,
-                            pydmbloc_type rhs,
-                            bool conserve_left_right = false) {
+pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs, pydmbloc_type rhs,
+                                     bool conserve_left_right = false) {
   dmbloc_t tmp_lhs, tmp_rhs;
   translate_dmbloc_py2cpp(tmp_lhs, lhs);
   translate_dmbloc_py2cpp(tmp_rhs, rhs);
@@ -29,31 +28,30 @@ pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs,
   return dst_out;
 }
 
-std::pair<pydmbloc_type,pydmbloc_type> py_routine(pydmbloc_type lhs,
-                            pydmbloc_type rhs,
-                            bool conserve_left_right = false) {
+std::tuple<pydmbloc_type, pydmbloc_type, dnum_t>
+py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
+            const dnum_t eps, const bool normalize, const int is_um,
+            const int direction_right) {
   dmbloc_t tmp_lhs, tmp_rhs;
   translate_dmbloc_py2cpp(tmp_lhs, lhs);
   translate_dmbloc_py2cpp(tmp_rhs, rhs);
   dtbloc_t tmp_dst;
-  mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, conserve_left_right);
+  mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, true);
   dnum_t dw = 0;
-  index_t chi_max=8;
-  dnum_t eps=1e-8;
-  std::cout << std::endl <<  std::endl << "okay" << std::endl;
-  mdot::theta_to_mm(tmp_dst,tmp_lhs,tmp_rhs,dw,chi_max,true,1, 1,eps);
-  std::cout << std::endl <<  std::endl << "okay" << std::endl;
-  std::pair<pydmbloc_type,pydmbloc_type> dst_out;
-  translate_dmbloc_cpp2py(dst_out.first, tmp_lhs);
-  translate_dmbloc_cpp2py(dst_out.second, tmp_rhs);
+  mdot::theta_to_mm(tmp_dst, tmp_lhs, tmp_rhs, dw, chi_max, normalize, is_um,
+                    direction_right, eps);
+  std::cout << std::endl << std::endl << "okay" << std::endl;
+  std::tuple<pydmbloc_type, pydmbloc_type, dnum_t> dst_out;
+  translate_dmbloc_cpp2py(std::get<0>(dst_out), tmp_lhs);
+  translate_dmbloc_cpp2py(std::get<1>(dst_out), tmp_rhs);
+  std::get<2>(dst_out) = dw;
   return dst_out;
 }
 
-
 PYBIND11_MODULE(mdot_routine, m) {
   m.doc() = "routine to speedup code execution";
-  m.def("routine", &py_routine);
-  m.def("mm_to_theta_no_gate", &py_mm_to_theta_no_gate,
-        py::arg("lhs_blocs"), py::arg("rhs_blocs"),
-        py::arg("conserve_left_right") = false, "execute mm_to_theta_no_gate.");
+  m.def("apply_mm", &py_apply_mm);
+  m.def("mm_to_theta_no_gate", &py_mm_to_theta_no_gate, py::arg("lhs_blocs"),
+        py::arg("rhs_blocs"), py::arg("conserve_left_right") = false,
+        "execute mm_to_theta_no_gate.");
 }
