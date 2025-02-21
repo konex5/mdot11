@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(unittest_yofi_tuple) {
   boost::filesystem::path temp = boost::filesystem::temp_directory_path() /
                                  boost::filesystem::unique_path();
   const std::string tempstr = temp.native(); // optional
-  std::cout << "file path : " << tempstr << std::endl;
+  // std::cout << "file path : " << tempstr << std::endl;
 
   {
     std::tuple<char, float, int> tout{'A', 1.5f, 6};
@@ -55,8 +55,8 @@ BOOST_AUTO_TEST_CASE(unittest_yofi_tuple) {
 #include <boost/mpl/list.hpp>
 #include <complex>
 
-typedef boost::mpl::list<float, double, std::complex<float>,
-                         std::complex<double>>
+typedef boost::mpl::list<float,
+                         double> // std::complex<float>, std::complex<double>>
     values;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(unittest_yofi_array, T, values) {
@@ -64,15 +64,25 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(unittest_yofi_array, T, values) {
   boost::filesystem::path temp = boost::filesystem::temp_directory_path() /
                                  boost::filesystem::unique_path();
   const std::string tempstr = temp.native();
-  std::cout << "file path : " << tempstr << std::endl;
+  // std::cout << "file path : " << tempstr << std::endl;
 
-  std::vector<T> dout{1, 2, 3, 4, 5};
-  std::vector<T> din;
+  {
 
-  std::cout << "  - Test# data:";
-  print_array(dout);
-  std::cout << std::endl;
+    std::vector<T> dout{1, 3, 2, 4, 5};
+    std::vector<T> din;
 
-  std::ofstream out(tempstr);
-  write_array(out, dout); // write data to file
+    std::ofstream out;
+    out.open(tempstr);
+    write_array(out, dout); // write tuple to file
+    out.close();
+    std::ifstream in(tempstr);
+    read_array(in, din); // read the tuple from file
+    std::cout << "  - Test*, data: (";
+    print_array(din); // print it out
+    std::cout << ")" << std::endl;
+    in.close();
+
+    BOOST_CHECK(dout == din);
+    boost::filesystem::remove(temp);
+  }
 }

@@ -1,7 +1,9 @@
 /// yet other file I/O
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <tuple>
 #include <type_traits>
 #include <vector>
@@ -57,22 +59,18 @@ template <typename T> void print_array(std::vector<T> &arr) {
   for (const auto &item : arr) {
     std::cout << item << ",";
   }
-  std::cout << std::endl;
 }
 
 // writing vector to a file
 template <typename T>
 void write_array(std::ofstream &ofs, std::vector<T> &arr) {
-  // std::copy(arr.begin(), arr.end(), std::ostreambuf_iterator<char>(ofs));
-  for (const auto &item : arr) {
-    ofs.write((char *)&item, sizeof(T));
-  }
+  std::copy(arr.begin(), arr.end(), std::ostreambuf_iterator<char>(ofs));
 }
 
 // reading vector to a file
 template <typename T> void read_array(std::ifstream &ifs, std::vector<T> &arr) {
-  // ifs.read((char *)&std::get<I>(t), sizeof(typename std::tuple_element<I,
-  // std::tuple<Tp...>>::type));
+  std::istreambuf_iterator<char> source(ifs);
+  std::copy(source, std::istreambuf_iterator<char>(), std::back_inserter(arr));
 }
 
 } // namespace yofi
