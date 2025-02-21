@@ -2,13 +2,12 @@
 , buildPythonPackage ? null
 , boost17x
 , cmakeMinimal
-, mdot
+  # , mdot
 , nix-gitignore
 , ninja
 , numpy ? null
 , pybind11 ? null
 , pytest ? null
-, src ? nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.
 , version ? "0.0.1"
 }:
 let
@@ -41,14 +40,14 @@ in
   #  pyfhmdot =
 
 buildPythonPackage {
-  name = "pyfhmdot-${version}";
+  name = "fhmdot-${version}";
   inherit version;
-  inherit src;
+  src = nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.;
 
   format = "other";
 
   nativeBuildInputs = [ cmakeMinimal ninja ];
-  buildInputs = [ boost17x mdot pybind11 ];
+  buildInputs = [ boost17x pybind11 ];
   propagatedBuildInputs = [ numpy ];
   checkInputs = [ pytest ];
 
