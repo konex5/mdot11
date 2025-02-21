@@ -105,11 +105,5 @@ with pkgs;
   shellHook = ''
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
     export PYTHONPATH=$PWD:$PYTHONPATH
-    echo ""
-    echo "You may want to import the pybind11 library during development"
-    echo "(assuming the project was compiled in ./b*) :"
-    echo ""
-    echo "export PYTHONPATH=\$(readlink -f \$PWD/b*/src/pybind* | tr '\\n' ':'):\$PYTHONPATH"
-    echo ""
   '';
 }

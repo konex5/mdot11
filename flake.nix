@@ -1,6 +1,8 @@
 {
   description = "fhmdot - Fast Hilbert Matrix Dot";
 
+  nixConfig.bash-prompt = "\\033[0;33m\\033[1m\[dev-fhmdot\] \\w\\033[0m\\033[0m$ ";
+
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
   outputs = { self, nixpkgs }:
@@ -21,18 +23,18 @@
 
       repoName = "fhmdot";
       repoVersion = nixpkgsFor.x86_64-linux.python3Packages.fhmdot.version;
-      repoDescription = "golden-pybind11 - A simple pybind11 flake";
+      repoDescription = "fhmdot - Fast Hilbert Matrix <|·|>";
     in
     {
       overlay = final: prev:
         let
           inherit (prev.lib) composeExtensions;
           pythonPackageOverrides = python-self: python-super: {
-            golden-pybind11 = python-self.callPackage ./derivation.nix {
+            fhmdot = python-self.callPackage ./derivation.nix {
               src = self;
               stdenv = if prev.stdenv.hostPlatform.isDarwin then final.clangStdenv else final.gccStdenv;
             };
-            golden-pybind11-clang = python-self.callPackage ./derivation.nix {
+            fhmdot-clang = python-self.callPackage ./derivation.nix {
               src = self;
               stdenv = final.clangStdenv;
             };
@@ -62,8 +64,8 @@
       );
 
       hydraJobs = {
-        build = forDevSystems (system: nixpkgsFor.${system}.python3Packages.golden-pybind11);
-        build-clang = forDevSystems (system: nixpkgsFor.${system}.python3Packages.golden-pybind11-clang);
+        build = forDevSystems (system: nixpkgsFor.${system}.python3Packages.fhmdot);
+        build-clang = forDevSystems (system: nixpkgsFor.${system}.python3Packages.fhmdot-clang);
 
         release = forDevSystems (system:
           with nixpkgsFor.${system}; releaseTools.aggregate
@@ -84,33 +86,33 @@
       };
       packages = forAllSystems (system:
         with nixpkgsFor.${system}; {
-          inherit (python3Packages) golden-pybind11 golden-pybind11-clang;
+          inherit (python3Packages) fhmdot fhmdot-clang;
         });
 
       defaultPackage = forAllSystems (system:
-        self.packages.${system}.golden-pybind11);
+        self.packages.${system}.fhmdot);
 
       apps = forAllSystems (system: {
-        golden-pybind11 = {
+        fhmdot = {
           type = "app";
-          program = "${self.packages.${system}.golden-pybind11}/bin/cli_golden";
+          program = "${self.packages.${system}.fhmdot}/bin/cli_golden";
         };
-        golden-pybind11-clang = {
+        fhmdot-clang = {
           type = "app";
-          program = "${self.packages.${system}.golden-pybind11-clang}/bin/cli_golden";
+          program = "${self.packages.${system}.fhmdot-clang}/bin/cli_golden";
         };
       }
       );
 
-      defaultApp = forAllSystems (system: self.apps.${system}.golden-pybind11);
+      defaultApp = forAllSystems (system: self.apps.${system}.fhmdot);
 
       templates = {
-        golden-pybind11 = {
+        fhmdot = {
           description = "template - ${repoDescription}";
           path = ./.;
         };
       };
 
-      defaultTemplate = self.templates.golden-pybind11;
+      defaultTemplate = self.templates.fhmdot;
     };
 }

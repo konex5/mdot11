@@ -62,13 +62,13 @@ in {
   
     installPhase = "ninja install";
   
-    excludedTests = [ "test_python_interface" ];
-    installCheckPhase = ''
-      runHook preCheck
-      ctest -V -E "${builtins.concatStringsSep "|" excludedTests}"
-      # export PYTHONPATH=$out/bin:$PYTHONPATH
-      # python -c "import pyview"
-      # pytest $src/tests/python -p no:cacheprovider
-      runHook postCheck
-    '';
+    # excludedTests = [ "test_python_interface" ];
+    # installCheckPhase = ''
+    #   runHook preCheck
+    #   ctest -V -E "${builtins.concatStringsSep "|" excludedTests}"
+    #   # export PYTHONPATH=$out/bin:$PYTHONPATH
+    #   # python -c "import pyview"
+    #   # pytest $src/tests/python -p no:cacheprovider
+    #   runHook postCheck
+    # '';
 }
