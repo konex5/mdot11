@@ -88,6 +88,7 @@ mkCustomShell {
     fmt
     gdb
     git
+    # hyperfine
     less
     llvm
     more
