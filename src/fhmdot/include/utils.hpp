@@ -22,6 +22,20 @@ template <typename T> constexpr bool is_float() {
   }
 }
 
+template <typename T> constexpr char num_character() {
+  if (is_float<T>() && !is_complex<T>) {
+    return 'F';
+  } else if (!is_float<T>() && !is_complex<T>) {
+    return 'D';
+  } else if (is_float<T>() && is_complex<T>) {
+    return 'C';
+  } else if (!is_float<T>() && is_complex<T>) {
+    return 'Z';
+  } else {
+    return '?';
+  };
+};
+
 } // namespace utils
 
 } // namespace fhmdot

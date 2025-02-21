@@ -75,12 +75,17 @@ template <typename T> void read_array(std::ifstream &ifs, std::vector<T> &arr) {
   std::copy(start, stop, std::back_inserter(arr));
 }
 
-template <typename M> void print_mp(std::ifstream &ifs, M &smp) {
-  // for (index, shape, arr) {
-  //   write_tuple(ifs, index);
-  //   write_tuple(ifs, shape);
-  //   write_array(ifs, arr);
-  // }
+template <typename M> void print_mp(M &smp) {
+  auto nb_blocks = smp.size();
+  std::cout << "#number of blocks : " << nb_blocks << std::endl;
+  std::cout << "#data type : " << nb_blocks << std::endl;
+
+  for (auto &mp : smp.arr_) {
+    //  mp.first
+    //   write_tuple(ifs, index);
+    //   write_tuple(ifs, shape);
+    //   write_array(ifs, arr);
+  }
 }
 
 template <typename M> void write_mp(std::ifstream &ifs, M &smp) {
