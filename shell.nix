@@ -52,6 +52,7 @@ let
       ipython
       pip
       pytest
+      python-language-server
       mypy
       pylint
       flake8
@@ -74,12 +75,16 @@ with pkgs;
       # zstd zlib
     ] ++ [ pythonEnv ] ++ lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
   nativeBuildInputs =
-    [ cmake ninja ] ++ [ fd ] ++ [
+    [ cmake ninja ] ++ [
+      bash-completion
+      #fd
+      more
+      cacert
+      which
+    ] ++ [
       # stdenv.cc.cc
       # libcxxabi        
       # astyle
-      bashCompletion
-      cacert
       clang-tools
       cmake-format
       cmakeCurses
