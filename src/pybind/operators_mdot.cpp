@@ -139,6 +139,7 @@ pyzblocs_type py_single_operator_blocs_cplx(std::string name) {
 
 
 
+
 numpy_array<double> py_single_operator_real(std::string name) {
   py::ssize_t ndim;
   std::vector<py::ssize_t> shape;
@@ -193,10 +194,50 @@ numpy_array<double> py_single_operator_real(std::string name) {
   return np_out;
 }
 
+
+numpy_array<znum_t> py_single_operator_cplx(std::string name) {
+  py::ssize_t ndim;
+  std::vector<py::ssize_t> shape;
+  std::vector<znum_t> vec;
+
+  if (name == "sh-id") {
+    ndim = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::size;
+    shape = {mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[0],
+             mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[1]};
+    auto arr = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::array;
+    vec = std::vector<znum_t>(arr.begin(), arr.end());
+  } else if (name == "sh-sy") {
+    ndim = mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::size;
+    shape = {mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[0],
+             mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[1]};
+    auto arr = mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::array;
+    vec = std::vector<znum_t>(arr.begin(), arr.end());
+  } else {
+    throw std::invalid_argument(std::string("The single operator \"") + name +
+                                std::string("\" is not available.\n"
+                                            "\t\t- Available operators are "
+                                            "sh-id-cplx, sh-sy, ..."));
+  }
+  //
+  auto deallocator = py::capsule(&vec, [](void *f) {
+    // py::detail::get_internals();
+    std::cout << "cleaning!" << std::endl;
+    auto vec_ptr = reinterpret_cast<std::vector<znum_t> *>(f);
+    vec_ptr->clear();
+  });
+  numpy_array<znum_t> np_out(ndim, vec.data(), deallocator);
+  np_out.resize(shape);
+  return np_out;
+}
+
 PYBIND11_MODULE(operators_mdot, m) {
   m.doc() = "a pybind11 for quantum simulations";
-  m.def("single_operator_real", &py_single_operator_real,
-        py::arg("name") = "sh-id", "return a dense single operator.");
+ 
   m.def("single_operator_blocs_real", &py_single_operator_blocs_real, py::arg("name") = "sh-id", "return a dictionary of blocs.");
   m.def("single_operator_blocs_cplx", &py_single_operator_blocs_cplx, py::arg("name") = "sh-id-cplx", "return a dictionary of blocs.");
+  m.def("single_operator_real", &py_single_operator_real,
+        py::arg("name") = "sh-id", "return a dense single operator.");
+  m.def("single_operator_cplx", &py_single_operator_cplx,
+        py::arg("name") = "sh-id-cplx", "return a dense single operator.");
+
 }
