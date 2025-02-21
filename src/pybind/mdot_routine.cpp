@@ -4,6 +4,7 @@
 
 #include "mdot/include/babel_type.hpp"
 #include "mdot/include/routine/interface.hpp"
+#include "mdot/include/routine/minimize.hpp"
 #include "pybind/include/translate.hpp"
 
 namespace py = pybind11;
@@ -103,11 +104,14 @@ pydmbloc_type py_minimize_lanczos_on_m(const pydmenvbloc_type env_bloc,
                                        pydmbloc_type mbloc,
                                        const size_t max_iteration,
                                        const dnum_t tolerance) {
-  dmbloc_t mp_in, mp_out;
+  dmbloc_t mp_in;
   translate_dmbloc_py2cpp(mp_in, mbloc);
-  // mdot::lanczos_on_m(mp_out, env_bloc_in, mp_in,max_iteration,tolerance)
+  dmenvbloc_t env_bloc_in;
+  translate_dmenvbloc_py2cpp(env_bloc_in,env_bloc);
+  dmbloc_t mp_out;
+  mdot::lanczos_on_m(mp_out, env_bloc_in, mp_in, max_iteration, tolerance);
   pydmbloc_type dst_out;
-  translate_dmbloc_cpp2py(dst_out, mp_in);
+  translate_dmbloc_cpp2py(dst_out, mp_out);
   return dst_out;
 }
 
