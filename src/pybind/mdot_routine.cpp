@@ -52,18 +52,21 @@ std::tuple<pydmbloc_type, pydmbloc_type, dnum_t>
 py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
             const dnum_t eps, const bool normalize, const int is_um,
             const int direction_right) {
-  dmbloc_t tmp_lhs, tmp_rhs;
-  translate_dmbloc_py2cpp(tmp_lhs, lhs);
-  translate_dmbloc_py2cpp(tmp_rhs, rhs);
+  dmbloc_t lhs_in, rhs_in;
+  translate_dmbloc_py2cpp(lhs_in, lhs);
+  translate_dmbloc_py2cpp(rhs_in, rhs);
   dtbloc_t tmp_dst;
-  mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, false);
+  mdot::mm_to_theta_no_gate(tmp_dst, lhs_in, rhs_in, false);
+  lhs_in.clear();
+  rhs_in.clear();
   dnum_t dw = 0;
-  mdot::theta_to_mm(tmp_dst, tmp_lhs, tmp_rhs, dw, chi_max, normalize, is_um,
+  dmbloc_t lhs_out, rhs_out;
+  mdot::theta_to_mm(tmp_dst, lhs_out, rhs_out, dw, chi_max, normalize, is_um,
                     direction_right, eps);
   // std::cout << std::endl << std::endl << "okay" << std::endl;
   std::tuple<pydmbloc_type, pydmbloc_type, dnum_t> dst_out;
-  translate_dmbloc_cpp2py(std::get<0>(dst_out), tmp_lhs);
-  translate_dmbloc_cpp2py(std::get<1>(dst_out), tmp_rhs);
+  translate_dmbloc_cpp2py(std::get<0>(dst_out), lhs_out);
+  translate_dmbloc_cpp2py(std::get<1>(dst_out), rhs_out);
   std::get<2>(dst_out) = dw;
   return dst_out;
 }
