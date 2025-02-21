@@ -114,6 +114,22 @@ pyzblocs_type py_single_operator_blocs_cplx(std::string name) {
     auto arrs = mdot::cplx_sh_blocs_crtp<mdot::sh_sy_u1>::get_arrays();
     for (index_t i = 0; i < nb_blocs; i++)
       vecs.push_back(std::vector<znum_t>(arrs[i].begin(), arrs[i].end()));
+  } else if (name == "sh_id-cplx_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::size};
+    shapes = {{mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[0],
+             mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[1]}};
+    auto arr = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::array;
+    vecs.push_back(std::vector<znum_t>(arr.begin(), arr.end()));
+  } else if (name == "sh_sy_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::size};
+    shapes = {{mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[0],
+             mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[1]}};
+    auto arr = mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::array;
+    vecs.push_back(std::vector<znum_t>(arr.begin(), arr.end()));
   } else {
     throw std::invalid_argument(std::string("The single operator (blocs) \"") +
                                 name +
