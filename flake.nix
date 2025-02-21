@@ -22,7 +22,7 @@
       );
 
       repoName = "fhmdot";
-      repoVersion = nixpkgsFor.x86_64-linux.python3Packages.fhmdot.version;
+      repoVersion = nixpkgsFor.x86_64-linux.libfhmdot.version;
       repoDescription = "fhmdot - Fast Hilbert Matrix <|·|>";
     in
     {
