@@ -71,8 +71,9 @@ let
       nbconvert
       nbsphinx
     ] ++ lib.optionals (!isPy39) [ python-language-server ]);
-    
-in mkCustomShell {
+
+in
+mkCustomShell {
   buildInputs = [ boost17x spdlog tbb ] ++ [ pythonEnv ]; # lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
 
   nativeBuildInputs = [ cmake gnumake ninja ] ++ [

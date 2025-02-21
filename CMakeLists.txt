@@ -78,8 +78,8 @@ endif()
 # ##############################################################################
 configure_file("${CMAKE_SOURCE_DIR}/src/utils/static.hpp.in"
                "${CMAKE_BINARY_DIR}/static.hpp")
-configure_file("${CMAKE_SOURCE_DIR}/src/fhmdot/include/file_header.hpp.in"
-               "${CMAKE_BINARY_DIR}/fhmdot/include/file_header.hpp")
+configure_file("${CMAKE_SOURCE_DIR}/src/fhmdot/utils/file_header.hpp.in"
+               "${CMAKE_BINARY_DIR}/fhmdot/utils/file_header.hpp")
 include_directories("${CMAKE_SOURCE_DIR}/src" ${CMAKE_BINARY_DIR})
 
 # Installation of headers

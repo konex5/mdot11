@@ -5,7 +5,7 @@
 # * Objects
 
 # * Libraries
-set(libraries apply_gate minimize_energy sweep)
+set(libraries gate sweep variational)
 foreach(library ${libraries})
   if(${PROJECT_STATIC})
     add_library(${library} STATIC core/${library}.cpp)

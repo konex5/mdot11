@@ -1,12 +1,12 @@
-#include <iostream> 
-#include <tbb/flow_graph.h>
 #include "tbb/tbb.h"
+#include <iostream>
+#include <tbb/flow_graph.h>
 
 int main() {
 
   tbb::flow::composite_node
 
-  tbb::flow::graph g;
+      tbb::flow::graph g;
 
   tbb::flow::function_node<int, std::string> my_first_node(
       g, tbb::flow::unlimited, [](const int &in) -> std::string {
