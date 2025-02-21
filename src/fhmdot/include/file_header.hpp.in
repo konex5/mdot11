@@ -1,0 +1,27 @@
+/* header identifier for yofi */
+#pragma once
+
+#include <string>
+
+namespace fhmdot
+{
+
+  namespace fheader
+  {
+
+    const std::string static version()
+    {
+      return "V:@PROJECT_VERSION@";
+    }
+    const std::string static msg_float_precision()
+    {
+      return "F:@FLOAT_PRECISION@";
+    }
+    const std::string static msg_complex_precision()
+    {
+      return "C:@CMPLX_PRECISION@";
+    }
+
+  } // namespace fheader
+
+} // namespace fhmdot
