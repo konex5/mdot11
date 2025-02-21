@@ -294,3 +294,4 @@ dmypy.json
 b*
 tests/sandbox
 docs/build*
+result
