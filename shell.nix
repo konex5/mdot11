@@ -14,8 +14,8 @@ let
       bbenoist.nix
       eamodio.gitlens
       ms-vscode.cpptools
-      ms-python.python
-      ms-python.vscode-pylance
+      # ms-python.python
+      # ms-python.vscode-pylance
     ] ++ vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "cmake";
@@ -35,18 +35,18 @@ let
         version = "0.31.0";
         sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
       }
-      {
-        name = "restructuredtext";
-        publisher = "lextudio";
-        version = "135.0.0";
-        sha256 = "yjPS9fZ628bfU34DsiUmZkOleRzW6EWY8DUjIU4wp9w=";
-      }
-      {
-        name = "vscode-clangd";
-        publisher = "llvm-vs-code-extensions";
-        version = "0.1.12";
-        sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
-      }
+      # {
+      #   name = "restructuredtext";
+      #   publisher = "lextudio";
+      #   version = "135.0.0";
+      #   sha256 = "yjPS9fZ628bfU34DsiUmZkOleRzW6EWY8DUjIU4wp9w=";
+      # }
+      # {
+      #   name = "vscode-clangd";
+      #   publisher = "llvm-vs-code-extensions";
+      #   version = "0.1.12";
+      #   sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
+      # }
     ];
   };
 
