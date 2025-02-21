@@ -52,7 +52,7 @@ let
   );
 in
 mkCustomShell {
-  buildInputs = [ boost spdlog tbb ]; # mkl
+  buildInputs = [ boost lapack spdlog tbb ]; # mkl
 
   nativeBuildInputs = [ cmake gnumake ninja ] ++ [
     bashCompletion
