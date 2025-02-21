@@ -1,4 +1,4 @@
-set(libraries fhmdot)
+set(libraries fhmdot_inspect dmrg)
 
 foreach(library ${libraries})
 
