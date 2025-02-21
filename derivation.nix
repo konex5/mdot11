@@ -7,7 +7,6 @@
 , numpy ? null
 , pybind11 ? null
 , pytest ? null
-, python ? null
 , src ? ./.
 }:
 let
@@ -66,9 +65,7 @@ buildPythonPackage rec {
   installPhase = "ninja install";
 
   postInstall = ''
-    mkdir -p $out/${python.sitePackages}
-    cp $out/bin/*.so $out/${python.sitePackages}
-    export PYTHONPATH=$out/${python.sitePackages}:$PYTHONPATH
+    # export PYTHONPATH=$out/lib/python3.9/site-packages:$$PYTHONPATH
   '';
 }
 #}
