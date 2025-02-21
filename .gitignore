@@ -291,6 +291,6 @@ dmypy.json
 .pyre/
 
 ## CUSTOM ######################################################################
-.b*
-.tests/sandbox
+b*
+tests/sandbox
 docs/build*
