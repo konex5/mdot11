@@ -40,7 +40,7 @@ py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
   dnum_t dw = 0;
   mdot::theta_to_mm(tmp_dst, tmp_lhs, tmp_rhs, dw, chi_max, normalize, is_um,
                     direction_right, eps);
-  std::cout << std::endl << std::endl << "okay" << std::endl;
+  // std::cout << std::endl << std::endl << "okay" << std::endl;
   std::tuple<pydmbloc_type, pydmbloc_type, dnum_t> dst_out;
   translate_dmbloc_cpp2py(std::get<0>(dst_out), tmp_lhs);
   translate_dmbloc_cpp2py(std::get<1>(dst_out), tmp_rhs);

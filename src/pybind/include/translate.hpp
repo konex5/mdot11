@@ -41,6 +41,7 @@ void translate_dmbloc_cpp2py(pydmbloc_type &target_py, dmbloc_t src_cpp) {
     auto ptr = src_value.second.data();
     auto deallocator = py::capsule(&src_value.second, [](void *ptr) {
       auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
+      // std::cout << "vec_ptr:" << vec_ptr;
       vec_ptr->clear();
     });
     numpy_array<dnum_t> np_target_array(np_size, ptr, deallocator);
