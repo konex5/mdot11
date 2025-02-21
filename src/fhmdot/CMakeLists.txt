@@ -1,4 +1,4 @@
-set(libraries fhmdot_inspect dmrg)
+set(libraries apply_gate fhmdot_inspect dmrg)
 
 foreach(library ${libraries})
 
@@ -7,8 +7,8 @@ foreach(library ${libraries})
   else()
     add_library(${library} SHARED core/${library}.cpp)
   endif()
-  target_link_libraries(${library}) # ${BOOST_LIBRARIES} Boost::system
-                                    # Boost::filesystem
+  target_link_libraries(${library} ${TBB_TBB_LIBRARY_RELEASE} Boost::system
+                        Boost::filesystem)
 
 endforeach()
 

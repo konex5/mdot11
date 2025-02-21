@@ -13,6 +13,8 @@ project(
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
+
 # ##############################################################################
 # OPTIONS
 # ##############################################################################
@@ -24,12 +26,13 @@ option(PROJECT_PRECISION_FLOAT32 "Build with floating point 32" OFF)
 option(PROJECT_SANDBOX "Build Project Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Python Tests" OFF)
 option(PROJECT_PYTHON "Build Python Wrapper (pybind)" OFF)
-option(PROJECT_VALIDATION "Build Python Validation" OFF)
+option(PROJECT_VALIDATION "Build Validation" OFF)
 option(PROJECT_SANITIZER_ASAN "Sanitizer ASAN" OFF)
 option(PROJECT_SANITIZER_MSAN "Sanitizer MSAN" OFF)
 option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
 option(PROJECT_CODE_COVERAGE "Sanitizer TSAN" OFF)
-option(PROJECT_DOCUMENTATION "Build Project Documentation" OFF)
+option(PROJECT_TBBMALLOC_PROXY
+       "enable tbb_malloc_proxy linking (conflicts with pybind)" OFF)
 
 set(PROJECT_CXX_FLAGS_DEBUG -g -Wall -Wextra -fno-omit-frame-pointer
                             -fno-inline)
@@ -66,6 +69,13 @@ find_package(
   COMPONENTS filesystem system program_options unit_test_framework
   REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+
+# * TBB
+if(${PROJECT_TBBMALLOC_PROXY})
+  find_package(TBB REQUIRED tbb tbbmalloc_proxy)
+else()
+  find_package(TBB REQUIRED tbb)
+endif()
 
 if(${PROJECT_PYTHON})
   # * Pybind11
