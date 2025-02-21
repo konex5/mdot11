@@ -36,7 +36,7 @@ py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
   translate_dmbloc_py2cpp(tmp_lhs, lhs);
   translate_dmbloc_py2cpp(tmp_rhs, rhs);
   dtbloc_t tmp_dst;
-  mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, true);
+  mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, false);
   dnum_t dw = 0;
   mdot::theta_to_mm(tmp_dst, tmp_lhs, tmp_rhs, dw, chi_max, normalize, is_um,
                     direction_right, eps);
