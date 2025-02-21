@@ -67,13 +67,13 @@ let
       nbsphinx
     ]);
 in
-(pkgs.mkShell.override { inherit stdenv; }) rec {
-  buildInputs = (with pkgs;
-    [ boost17x spdlog ] ++ [
-      zstd
-      zlib # stdenv.cc.cc.lib
-    ] ++ [ pythonEnv ]);
-  nativeBuildInputs = (with pkgs;
+with pkgs;
+(mkShell.override { inherit stdenv; }) rec {
+  buildInputs =
+    [ boost17x tbb spdlog ] ++ [
+      # zstd zlib
+    ] ++ [ pythonEnv ] ++ lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
+  nativeBuildInputs =
     [ cmake ninja ] ++ [ fd ] ++ [
       # stdenv.cc.cc
       # libcxxabi        
@@ -87,6 +87,7 @@ in
       gdb
       git
       gnumake
+      llvm
       nixpkgs-fmt
       pkg-config
       emacs-nox
@@ -94,9 +95,9 @@ in
       pandoc
       typora
       vscodeExt
-    ] ++ [ black jupyter pythonEnv sphinx yapf ]);
+    ] ++ [ black jupyter pythonEnv sphinx yapf ];
   shellHook = ''
-    export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
+    export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
     export PYTHONPATH=$PWD:$PYTHONPATH
     echo ""
     echo "You may want to import the pybind11 library during development"
