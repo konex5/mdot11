@@ -1,10 +1,8 @@
-# # * Headers
-# file(GLOB_RECURSE interfaces "include/*.hpp")
-# add_library(fhmdot_headers INTERFACE ${interfaces})
-# install(TARGETS fhmdot_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+# # * Headers file(GLOB_RECURSE interfaces "include/*.hpp")
+# add_library(fhmdot_headers INTERFACE ${interfaces}) install(TARGETS
+# fhmdot_headers DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 
 # * Objects
-
 
 # * Libraries
 set(libraries apply_gate fhmdot_inspect dmrg)
@@ -17,7 +15,6 @@ foreach(library ${libraries})
   target_link_libraries(${library} ${TBB_TBB_LIBRARY_RELEASE} Boost::system
                         Boost::filesystem)
 endforeach()
-
 
 # * Executable
 set(clicommands fhmdot_exe)
