@@ -1,7 +1,7 @@
 # * BUILD
 pybind11_add_module(mdot_operators mdot_operators.cpp)
 pybind11_add_module(mdot_routine mdot_routine.cpp)
-pybind11_add_module(cool_example cool_example.cpp)
+# pybind11_add_module(cool_example cool_example.cpp)
 
 target_link_libraries(mdot_routine PUBLIC  ${TBB_TBB_LIBRARY_RELEASE} lapack)
 
