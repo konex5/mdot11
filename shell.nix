@@ -74,7 +74,7 @@ in
       zlib # stdenv.cc.cc.lib
     ] ++ [ pythonEnv ]);
   nativeBuildInputs = (with pkgs;
-    [ cmake ninja ] ++ [
+    [ cmake ninja ] ++ [ fd ] ++ [
       # stdenv.cc.cc
       # libcxxabi        
       # astyle
