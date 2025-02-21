@@ -21,7 +21,7 @@
                 src = self;
                 stdenv = pkgs-self.clangStdenv;
               };
-              project_dev = python-self.callPackage ./derivation-shell.nix { };
+              project_dev = python-self.callPackage ./shell.nix { };
             };
           in {
             python37 = pkgs-super.python37.override (old: {
