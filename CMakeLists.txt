@@ -24,10 +24,8 @@ option(PROJECT_PRECISION_FLOAT32 "Build with floating point 32" OFF)
 # "Build for a doubled Hilbert space" ON)
 option(PROJECT_SANDBOX "Build Project Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Python Tests" OFF)
-option(PROJECT_PYTHON "Build Python Wrapper (pybind)" OFF)
+option(PROJECT_PYTHON "Build Python Wrapper (pybind)" ON)
 option(PROJECT_VALIDATION "Build Validation" OFF)
-option(PROJECT_TBBMALLOC_PROXY
-       "enable tbb_malloc_proxy linking (pybind conflicts)" OFF)
 
 set(PROJECT_CXX_FLAGS -Wall -Wextra)
 set(PROJECT_CXX_FLAGS_DEBUG -g -fno-inline -fno-omit-frame-pointer) # -pedantic
@@ -51,13 +49,6 @@ find_package(
   COMPONENTS filesystem system program_options unit_test_framework
   REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
-
-# * TBB
-if(${PROJECT_TBBMALLOC_PROXY})
-  find_package(TBB REQUIRED tbb tbbmalloc_proxy)
-else()
-  find_package(TBB REQUIRED tbb)
-endif()
 
 if(${PROJECT_PYTHON})
   # * Pybind11
