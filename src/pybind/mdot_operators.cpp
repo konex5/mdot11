@@ -196,7 +196,6 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
   py::ssize_t ndim;
   std::vector<py::ssize_t> shape;
   std::vector<znum_t> vec;
-
   if (name == "sh-id") {
     ndim = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::size;
     shape = {mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[0],
@@ -217,7 +216,7 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
   }
   //
   auto deallocator = py::capsule(&vec, [](void *f) {
-    // py::detail::get_internals();
+    //py::detail::get_internals();
     std::cout << "cleaning!" << std::endl;
     auto vec_ptr = reinterpret_cast<std::vector<znum_t> *>(f);
     vec_ptr->clear();
@@ -227,7 +226,7 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
   return np_out;
 }
 
-PYBIND11_MODULE(fmd_operators, m) {
+PYBIND11_MODULE(mdot_operators, m) {
   m.doc() = "a pybind11 for quantum simulations";
 
   m.def("single_operator_blocs_real", &py_single_operator_blocs_real,
