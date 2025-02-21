@@ -15,7 +15,8 @@ python3Packages.callPackage ./derivation.nix {
   src = ./.;
   stdenv = if clangSupport then clangStdenv else gccStdenv;
   mdot = callPackage ../mdot/derivation.nix {
-    src = ./mdot/.;
+    src = ../mdot/.;
     stdenv = if clangSupport then clangStdenv else gccStdenv;
+    version = "0.0.2";
   };
 }

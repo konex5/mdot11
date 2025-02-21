@@ -8,9 +8,10 @@
 , pybind11 ? null
 , pytest ? null
 , src ? ./.
+, version ? "0.0.1"
 }:
 let
-  version = "0.0.0";
+  
 in
 #{
 
@@ -38,14 +39,14 @@ in
 
   #  pyfhmdot =
 
-buildPythonPackage rec {
-  name = "pyfhmdot";
+buildPythonPackage {
+  name = "pyfhmdot-${version}";
   inherit src;
-
+  inherit version;
   format = "other";
 
   nativeBuildInputs = [ cmakeMinimal ninja ];
-  buildInputs = [ boost17x pybind11 ];
+  buildInputs = [ boost17x mdot pybind11 ];
   propagatedBuildInputs = [ numpy ];
   checkInputs = [ pytest ];
 
