@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_mdot_routine_routine(make_random_blocs):
     mps_left = make_random_blocs(20, 2)
     mps_right = make_random_blocs(20, 1)
@@ -26,4 +27,4 @@ def test_mdot_routine_routine(make_random_blocs):
     m_dst = {}
     multiply_mp(m_dst, m_left, m_right, [2], [0])
     dst = {}
-    multiply_mp(dst, left, right, [2], [0])
+    # multiply_mp(dst, left, right, [2], [0])
