@@ -1,5 +1,5 @@
 # * BUILD
-pybind11_add_module(fhmat-hmat hmat.cpp)
+pybind11_add_module(fhm wrapper.cpp)
 
 # * INSTALLATION
-install(TARGETS fhmat-hmat DESTINATION bin)
+install(TARGETS fhm DESTINATION bin)
