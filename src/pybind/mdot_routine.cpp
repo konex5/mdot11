@@ -40,7 +40,7 @@ pydtbloc_type py_mm_to_theta_with_gate(pydmbloc_type lhs, pydmbloc_type rhs, pyd
   translate_dgbloc_py2cpp(tmp_gate, gate);
   
   dtbloc_t tmp_dst;
-  //mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, conserve_left_right);
+  mdot::mm_to_theta_with_gate(tmp_dst, tmp_lhs, tmp_rhs, tmp_gate, conserve_left_right);
   pydtbloc_type dst_out;
   translate_dtbloc_cpp2py(dst_out, tmp_dst);
   return dst_out;
@@ -75,5 +75,8 @@ PYBIND11_MODULE(mdot_routine, m) {
         py::arg("is_um"), py::arg("direction_right"));
   m.def("mm_to_theta_no_gate", &py_mm_to_theta_no_gate, py::arg("lhs_blocs"),
         py::arg("rhs_blocs"), py::arg("conserve_left_right") = false,
+        "execute mm_to_theta_no_gate.");
+  m.def("mm_to_theta_with_gate", &py_mm_to_theta_with_gate, py::arg("lhs_blocs"),
+        py::arg("rhs_blocs"), py::arg("gate_blocs"), py::arg("conserve_left_right") = false,
         "execute mm_to_theta_no_gate.");
 }
