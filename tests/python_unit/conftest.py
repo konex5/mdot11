@@ -7,9 +7,10 @@ def make_list_operator_name():
 
     return _make_list_operator_name
 
-
+@pytest.fixture
 def make_list_real_operator_name(make_list_operator_name):
     return make_list_operator_name()[0]
 
+@pytest.fixture
 def make_list_cplx_operator_name(make_list_operator_name):
     return make_list_operator_name()[1]
