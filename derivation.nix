@@ -14,7 +14,7 @@
 }:
 
 buildPythonPackage {
-  name = "mdotbind-${version}";
+  name = "mdot11-${version}";
   inherit version;
   inherit src;
 
