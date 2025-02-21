@@ -20,7 +20,7 @@ python3Packages.callPackage ./derivation.nix {
     src = fetchgit {
       url = mdotPath;
       sha256 = "sha256-P/SZ2/3rErb3YQomF/rBtpZRq2UKLBj3f5a+uTxH7fU=";
-      rev = "v0.0.2";
+      rev = "v0.0.3";
     };
   };
 }
