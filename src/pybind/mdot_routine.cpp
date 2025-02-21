@@ -4,7 +4,7 @@
 
 #include "mdot/include/babel_type.hpp"
 #include "mdot/include/routine/interface.hpp"
-
+#include "pybind/include/translate.hpp"
 
 namespace py = pybind11;
 
@@ -19,8 +19,11 @@ using pydtbloc_type =
 
 
 void py_mm_to_theta_no_gate(pydtbloc_type dst, pydmbloc_type lhs, pydmbloc_type rhs, bool conserve_left_right = false) {
-    // dst
-    //mdot::mm_to_theta_no_gate()
+    dmbloc_t tmp_lhs, tmp_rhs;
+    translate_dmbloc_py2cpp(tmp_lhs,lhs);
+    translate_dmbloc_py2cpp(tmp_rhs,rhs);
+    dtbloc_t tmp_dst;
+    mdot::mm_to_theta_no_gate(tmp_dst,tmp_lhs,tmp_rhs,conserve_left_right);
 }
 
 

@@ -3,11 +3,13 @@
 , boost17x
 , cmakeMinimal
   # , mdot
+, lapack
 , nix-gitignore
 , ninja
 , numpy ? null
 , pybind11 ? null
 , pytest ? null
+, tbb
 , version ? "0.0.1"
 }:
 let
@@ -22,7 +24,7 @@ buildPythonPackage {
   format = "other";
 
   nativeBuildInputs = [ cmakeMinimal ninja ];
-  buildInputs = [ boost17x pybind11 ];
+  buildInputs = [ boost17x pybind11 lapack tbb ];
   propagatedBuildInputs = [ numpy ];
   checkInputs = [ pytest ];
 
