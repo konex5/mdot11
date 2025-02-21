@@ -17,11 +17,12 @@ public:
   typedef Q qnum_type;
   typedef T value_type;
   // using namespace fhmdot::hmatrix::mps<Q, T>;
-  typedef fhmdot::hmatrix::mps<Q, T>::index_t index_t;
-  typedef fhmdot::hmatrix::mps<Q, T>::shape_t shape_t;
-  typedef fhmdot::hmatrix::mps<Q, T>::index_type index_type;
-  typedef fhmdot::hmatrix::mps<Q, T>::shape_type shape_type;
-  typedef fhmdot::hmatrix::mps<Q, T>::index_shape_type index_shape_type;
+  typedef typename fhmdot::hmatrix::mps<Q, T>::index_t index_t;
+  typedef typename fhmdot::hmatrix::mps<Q, T>::shape_t shape_t;
+  typedef typename fhmdot::hmatrix::mps<Q, T>::index_type index_type;
+  typedef typename fhmdot::hmatrix::mps<Q, T>::shape_type shape_type;
+  typedef
+      typename fhmdot::hmatrix::mps<Q, T>::index_shape_type index_shape_type;
 
   typedef pybind11::array_t<value_type, pybind11::array::c_style> numpy_array;
   typedef typename std::pair<index_shape_type, numpy_array> pyhmat_type;

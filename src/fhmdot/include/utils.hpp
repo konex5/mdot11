@@ -23,13 +23,13 @@ template <typename T> constexpr bool is_float() {
 }
 
 template <typename T> constexpr char num_character() {
-  if (is_float<T>() && !is_complex<T>) {
+  if (std::is_same<float, T>::value) {
     return 'F';
-  } else if (!is_float<T>() && !is_complex<T>) {
+  } else if (std::is_same<double, T>::value) {
     return 'D';
-  } else if (is_float<T>() && is_complex<T>) {
+  } else if (std::is_same<typename std::complex<float>, T>::value) {
     return 'C';
-  } else if (!is_float<T>() && is_complex<T>) {
+  } else if (std::is_same<typename std::complex<double>, T>::value) {
     return 'Z';
   } else {
     return '?';
