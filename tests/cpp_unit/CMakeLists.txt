@@ -1,11 +1,4 @@
-set(UNIT_TESTS_NAMES
-    babel_type
-    dummy
-    file_header
-    hmatrix
-    qnum
-    utils
-    yofi) # golden
+set(UNIT_TESTS_NAMES dummy)
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)

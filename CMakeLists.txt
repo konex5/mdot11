@@ -69,30 +69,27 @@ endif()
 # ##############################################################################
 # Headers/Interface
 # ##############################################################################
-configure_file("${CMAKE_SOURCE_DIR}/src/utils/static.hpp.in"
-               "${CMAKE_BINARY_DIR}/static.hpp")
-configure_file("${CMAKE_SOURCE_DIR}/src/fhmdot/utils/file_header.hpp.in"
-               "${CMAKE_BINARY_DIR}/fhmdot/utils/file_header.hpp")
+# configure_file("${CMAKE_SOURCE_DIR}/src/utils/static.hpp.in"
+#                "${CMAKE_BINARY_DIR}/static.hpp")
 include_directories("${CMAKE_SOURCE_DIR}/src" ${CMAKE_BINARY_DIR})
 
-# Installation of headers
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/fhmdot
-  DESTINATION "include"
-  FILES_MATCHING
-  PATTERN "*.hpp")
+# # Installation of headers
+# install(
+#   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/fhmdot
+#   DESTINATION "include"
+#   FILES_MATCHING
+#   PATTERN "*.hpp")
 
-# Installation of configured headers
-install(
-  DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fhmdot
-  DESTINATION "include"
-  FILES_MATCHING
-  PATTERN "*.hpp")
+# # Installation of configured headers
+# install(
+#   DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fhmdot
+#   DESTINATION "include"
+#   FILES_MATCHING
+#   PATTERN "*.hpp")
 
 # ##############################################################################
 # PROJECT
 # ##############################################################################
-add_subdirectory(src/fhmdot)
 if(${PROJECT_PYTHON})
   add_subdirectory(src/pybind)
 endif()
