@@ -94,7 +94,7 @@ mkCustomShell {
     more
     nixpkgs-fmt
     pkg-config
-  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ black pythonEnv sphinx yapf ];
+  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ black pythonEnv sphinx ];
 
   shellHook = ''
     export HOME=$(pwd);
