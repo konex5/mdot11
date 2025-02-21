@@ -30,33 +30,38 @@
         let
           inherit (prev.lib) composeExtensions;
           pythonPackageOverrides = python-self: python-super: {
-            fhmdot = python-self.callPackage ./derivation.nix {
-              src = self;
-              stdenv = if prev.stdenv.hostPlatform.isDarwin then final.clangStdenv else final.gccStdenv;
-            };
-            fhmdot-clang = python-self.callPackage ./derivation.nix {
-              src = self;
-              stdenv = final.clangStdenv;
-            };
-          };
+	  #     inherit (python-self.callPackage ./derivation.nix {
+          #     src = self;
+          #     stdenv = if prev.stdenv.hostPlatform.isDarwin then final.clangStdenv else final.gccStdenv;
+          # }) pyfhmdot;
+	};
         in
         {
-          python37 = prev.python37.override (old: {
-            packageOverrides =
-              composeExtensions (old.packageOverrides or (_: _: { }))
-                pythonPackageOverrides;
-          });
-          python38 = prev.python38.override (old: {
-            packageOverrides =
-              composeExtensions (old.packageOverrides or (_: _: { }))
-                pythonPackageOverrides;
-          });
-          python39 = prev.python39.override (old: {
-            packageOverrides =
-              composeExtensions (old.packageOverrides or (_: _: { }))
-                pythonPackageOverrides;
-          });
-          python3 = final.python39;
+	# python37 = prev.python37.override (old: {
+        #     packageOverrides =
+        #       composeExtensions (old.packageOverrides or (_: _: { }))
+        #         pythonPackageOverrides;
+        #   });
+        #   python38 = prev.python38.override (old: {
+        #     packageOverrides =
+        #       composeExtensions (old.packageOverrides or (_: _: { }))
+        #         pythonPackageOverrides;
+        #   });
+        #   python39 = prev.python39.override (old: {
+        #     packageOverrides =
+        #       composeExtensions (old.packageOverrides or (_: _: { }))
+        #         pythonPackageOverrides;
+        #   });
+        #   python3 = final.python39;
+
+	  inherit (prev.callPackage ./derivation.nix {
+              src = self;
+              stdenv = final.gccStdenv;
+          }) libfhmdot;
+          libfhmdot-clang = (prev.callPackage ./derivation.nix {
+            src = self;
+            stdenv = final.clangStdenv;
+          }).libfhmdot;
         };
 
       devShell = forDevSystems (system:
@@ -64,55 +69,45 @@
       );
 
       hydraJobs = {
-        build = forDevSystems (system: nixpkgsFor.${system}.python3Packages.fhmdot);
-        build-clang = forDevSystems (system: nixpkgsFor.${system}.python3Packages.fhmdot-clang);
-
+        build = forDevSystems (system: nixpkgsFor.${system}.libfhmdot );
+        build-clang = forDevSystems (system: nixpkgsFor.${system}.libfhmdot-clang );
+	# build-python3 = forDevSystems (system: nixpkgsFor.${system}.python3Packages.pyfhmdot );
+	
         release = forDevSystems (system:
           with nixpkgsFor.${system}; releaseTools.aggregate
             {
               name = "${repoName}-release-${repoVersion}";
               constituents =
                 [
-                  self.hydraJobs.build.${system}
                   self.hydraJobs.build-clang.${system}
-                  #self.hydraJobs.docker.${system}
+		  # self.hydraJobs.build-python3
                 ] ++ lib.optionals (hostPlatform.isLinux) [
-                  #self.hydraJobs.deb.x86_64-linux
-                  #self.hydraJobs.rpm.x86_64-linux
-                  #self.hydraJobs.coverage.x86_64-linux
+                  self.hydraJobs.build.${system}
                 ];
               meta.description = "hydraJobs: ${repoDescription}";
             });
       };
       packages = forAllSystems (system:
         with nixpkgsFor.${system}; {
-          inherit (python3Packages) fhmdot fhmdot-clang;
+	  inherit libfhmdot libfhmdot-clang;
+	  # inherit (python3Packages) pyfhmdot;
         });
 
       defaultPackage = forAllSystems (system:
-        self.packages.${system}.fhmdot);
+        self.packages.${system}.libfhmdot);
 
-      apps = forAllSystems (system: {
-        fhmdot = {
-          type = "app";
-          program = "${self.packages.${system}.fhmdot}/bin/cli_golden";
-        };
-        fhmdot-clang = {
-          type = "app";
-          program = "${self.packages.${system}.fhmdot-clang}/bin/cli_golden";
-        };
-      }
-      );
+      # apps = forAllSystems (system: {
+      #   fhmdot = {
+      #     type = "app";
+      #     program = "${self.packages.${system}.fhmdot}/bin/cli_golden";
+      #   };
+      #   fhmdot-clang = {
+      #     type = "app";
+      #     program = "${self.packages.${system}.fhmdot-clang}/bin/cli_golden";
+      #   };
+      # }
+      # );
 
-      defaultApp = forAllSystems (system: self.apps.${system}.fhmdot);
-
-      templates = {
-        fhmdot = {
-          description = "template - ${repoDescription}";
-          path = ./.;
-        };
-      };
-
-      defaultTemplate = self.templates.fhmdot;
+      # defaultApp = forAllSystems (system: self.apps.${system}.libfhmdot);
     };
 }
