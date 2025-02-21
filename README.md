@@ -2,39 +2,52 @@
 
 Welcome to `fhmdot` (Fast Hilbert Matrix​ :arrow_backward: :zap: :red_circle: :zap: :arrow_forward:), a quantum number agnostic routine for differential gate application.
 
+```
+ ┌┴─────┴┐ 
+ └┬─────┬┘ 
+           
+  │     │  
+ ┌┴┐   ┌┴┐ 
+─┤A├─ ─┤B├─
+ └─┘   └─┘ 
+```
+
 ## Abstract
 
-`fhmdot` has tow different component : 
+`fhmdot` has two components :
 
-* a routine library <!-- which could be chained (:smirk_cat:) which give a new dimension for quantum gate application simulations.​ -->
-* a python interface to help user enter the data production.
+* a library dedicated to the gate application <!-- which could be chained (:smirk_cat:) which give a new dimension for quantum gate application simulations.​ -->
+* a python interface to quickly use the implementation.
+
+## Design
+
+The interface uses three objects, two similar hierarchical matrices (`A` and `B`) and one gate `T`. 
+The goal is to apply and SVD the gate as fast as possible.
+
+Quantum numbers of local dimension `d` are creating a difficult tensor optimization problem. 
+According to the benchmarks, pools of dimensions `~ 2*d+1` are increasing the application in practice.
 
 ## Performance
 
 We benchmark the code using `hyperfine`
 
-* Internal dimension `k = 1, 8, 16, 32, 64, 128, 256, 516, 1028, 2056, 4112, 8224`.
+* Internal dimension `k = 1, 8, 16, 32, 64, 128, 256, 516, 1028, 2056, 4112, 8224`
+* Quantum Numbers `QN='sh-None', 'sh-U1', 'so-None', 'so-U1', 'ldsh-None', 'ldsh-U1'`
+* Random data in the fixed structure of `A`, `B` and `T`
+* Random data in the different quantum sectors
 
-* Random data but fixed structure of `A`, `B` and `T`
-* Different quantum structure
 * Different parallel token and platforms
 
-#### Results
 
-
-
-## Design
-
-The interface uses three objects, two similar hierarchical matrices (`A` and `B`) and one gate `T`.
 
 ### In-depth details using the python interface
 
 
 
-  
 
+## Examples
 
-
+Examples of iDMRG/iTEBD/DMRG/... can be found in the `./examples/` folder.
 
 
 ## Code Snippets
