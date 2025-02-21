@@ -6,7 +6,7 @@ Welcome to `fhmdot` (Fast Hilbert Matrix​ :arrow_backward: :zap: :red_circle: 
  ┌┴─────┴┐ 
  └┬─────┬┘ 
            
-  │     │  
+  │     │
  ┌┴┐   ┌┴┐ 
 ─┤A├─ ─┤B├─
  └─┘   └─┘ 
