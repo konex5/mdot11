@@ -69,7 +69,7 @@ let
 in (pkgs.mkShell.override { inherit stdenv; }) rec {
   buildInputs = (with pkgs;
     [ boost17x spdlog ] ++ [
-      zlib # stdenv.cc.cc.lib
+      zstd zlib # stdenv.cc.cc.lib
     ] ++ [ pythonEnv ]);
   nativeBuildInputs = (with pkgs;
     [ cmake ninja ] ++ [
