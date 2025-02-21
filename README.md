@@ -1,6 +1,6 @@
-# Fast Hilbert Matrix :arrow_backward: :zap: :black_circle: :zap: :arrow_forward:
+# Fast Hilbert Matrix :arrow_backward: :zap: :red_circle: :zap: :arrow_forward:
 
-Welcome to `fhmdot` (Fast Hilbert Matrix​ :arrow_backward: :zap: :black_circle: :zap: :arrow_forward:), a quantum number agnostic routine for differential gate application.
+Welcome to `fhmdot` (Fast Hilbert Matrix​ :arrow_backward: :zap: :red_circle: :zap: :arrow_forward:), a quantum number agnostic routine for differential gate application.
 
 ## Abstract
 
