@@ -24,14 +24,33 @@ pydtbloc_type py_mm_to_theta_no_gate(pydmbloc_type lhs,
   translate_dmbloc_py2cpp(tmp_rhs, rhs);
   dtbloc_t tmp_dst;
   mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, conserve_left_right);
-  pydtbloc_type dst;
-  translate_dtbloc_cpp2py(dst, tmp_dst);
-  return dst;
+  pydtbloc_type dst_out;
+  translate_dtbloc_cpp2py(dst_out, tmp_dst);
+  return dst_out;
 }
+
+pydtbloc_type py_routine(pydmbloc_type lhs,
+                            pydmbloc_type rhs,
+                            bool conserve_left_right = false) {
+  dmbloc_t tmp_lhs, tmp_rhs;
+  translate_dmbloc_py2cpp(tmp_lhs, lhs);
+  translate_dmbloc_py2cpp(tmp_rhs, rhs);
+  dtbloc_t tmp_dst;
+  mdot::mm_to_theta_no_gate(tmp_dst, tmp_lhs, tmp_rhs, conserve_left_right);
+  dnum_t dw;
+  index_t chi_max;
+  dnum_t eps=1e-8;
+  std::cout << std::endl <<  std::endl << "okay" << std::endl;
+  mdot::theta_to_mm(tmp_dst,tmp_lhs,tmp_rhs,dw,chi_max,true,true, 1,eps);
+  pydtbloc_type dst_out;
+  translate_dtbloc_cpp2py(dst_out, tmp_dst);
+  return dst_out;
+}
+
 
 PYBIND11_MODULE(mdot_routine, m) {
   m.doc() = "routine to speedup code execution";
-
+  m.def("routine", &py_routine);
   m.def("mm_to_theta_no_gate", &py_mm_to_theta_no_gate,
         py::arg("lhs_blocs"), py::arg("rhs_blocs"),
         py::arg("conserve_left_right") = false, "execute mm_to_theta_no_gate.");
