@@ -1,11 +1,14 @@
 #include <boost/test/unit_test.hpp>
 // #include "boost/list.hpp"
+#include <iostream>
 
 int add(int i, int j) { return i + j; }
 
 BOOST_AUTO_TEST_CASE(my_test) {
   // seven ways to detect and report the same error:
   BOOST_CHECK(add(2, 2) == 4); // #1 continues on error
+  int x = 1;
+  std::cout << "ending" << x;
 
   BOOST_REQUIRE(add(2, 2) == 4); // #2 throws on error
 
