@@ -5,6 +5,9 @@
 
 #include "babel_type.hpp"
 
+namespace fhmdot {
+namespace qnum {
+
 template <class Q> struct quantum_number_crtp {
   static constexpr index_t dim = Q::qn_dim;
   inline static index_t sum(index_t q1, index_t q2) { return Q::qsum(q1, q2); }
@@ -28,3 +31,6 @@ struct sh_su2 : quantum_number_crtp<sh_su2> {
   inline static index_t qsum(index_t q1, index_t q2) { return q1 + q2; }
   inline static index_t qsub(index_t q1, index_t q2) { return q1 - q2; }
 };
+
+} // namespace qnum
+} // namespace fhmdot

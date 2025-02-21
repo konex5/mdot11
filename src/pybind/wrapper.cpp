@@ -8,6 +8,7 @@
 #include "fhmdot/include/babel_type.hpp"
 #include "fhmdot/include/qnum.hpp"
 
+using namespace fhmdot::qnum;
 namespace py = pybind11;
 
 template <typename T> using numpy_array = py::array_t<T, py::array::c_style>;

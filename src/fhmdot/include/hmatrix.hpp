@@ -2,10 +2,7 @@
 
 #pragma once
 
-#include <pybind11/numpy.h>
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-//#include <vector>
+#include <vector>
 
 // #include "fhmdot/include/yofi.hpp"
 
@@ -29,6 +26,9 @@ public:
   void load(std::string filename){};
   void save(std::string filename){};
 
+  void from_std(hmat_type mps_in){};
+  hmat_type to_std() { return {{0, 0, 0, 0, 0, 0}, {0, 1, 2, 3, 4}}; };
+
 private:
   hmat_type arr_;
 };
@@ -38,12 +38,6 @@ template <class Q, typename T> class mpo {
 public:
   typedef Q qnum_type;
   typedef T value_type;
-
-  // void from_python(std::list<std::tuple<>>)  {};
-  // void to_python(std::list<std::pair<>>) {};
-
-  // void load(std::string filename){};
-  // void save(std::string filename){};
 
 private:
   // std::map<std::tuple<4>, std::vector<value_type>> arr_;

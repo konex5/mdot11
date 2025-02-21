@@ -16,20 +16,23 @@ template <class Q, typename T> class pymps : fhmdot::hmatrix::mps<Q, T> {
 public:
   typedef Q qnum_type;
   typedef T value_type;
-  typedef uint16_t index_t;
-  typedef uint16_t shape_t;
-  typedef std::tuple<index_t, index_t, index_t> index_type;
-  typedef std::tuple<shape_t, shape_t, shape_t> shape_type;
-  typedef std::tuple<index_t, index_t, index_t, index_t, index_t, index_t>
-      index_shape_type;
+  // using namespace fhmdot::hmatrix::mps<Q, T>;
+  typedef fhmdot::hmatrix::mps<Q, T>::index_t index_t;
+  typedef fhmdot::hmatrix::mps<Q, T>::shape_t shape_t;
+  typedef fhmdot::hmatrix::mps<Q, T>::index_type index_type;
+  typedef fhmdot::hmatrix::mps<Q, T>::shape_type shape_type;
+  typedef fhmdot::hmatrix::mps<Q, T>::index_shape_type index_shape_type;
 
   typedef pybind11::array_t<value_type, pybind11::array::c_style> numpy_array;
   typedef typename std::pair<index_shape_type, numpy_array> pyhmat_type;
 
-  pymps() {}
+  pymps(){
+      // pyhmat_type pymps_in
+      // from_python(pymps_in);
+  };
 
-  // void from_python(hmat_type mps_in){};
-  // hmat_type to_python(){};
+  void from_python(pyhmat_type mps_in){};
+  pyhmat_type to_python(){};
 };
 
 template <class Q, typename T> class pympo {
@@ -37,15 +40,6 @@ template <class Q, typename T> class pympo {
 public:
   typedef Q qnum_type;
   typedef T value_type;
-
-  // void from_python(std::list<std::tuple<>>)  {};
-  // void to_python(std::list<std::pair<>>) {};
-
-  // void load(std::string filename){};
-  // void save(std::string filename){};
-
-private:
-  // std::map<std::tuple<4>, std::vector<value_type>> arr_;
 };
 
 } // namespace pyhmatrix
