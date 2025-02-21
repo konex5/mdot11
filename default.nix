@@ -10,8 +10,10 @@
 }:
 
 with pkgs;
+with python3Packages;
 
-python3Packages.callPackage ./derivation.nix {
+callPackage ./derivation.nix {
   stdenv = if clangSupport then clangStdenv else gccStdenv;
-  pybind11 = python3Packages.pybind11;
 }
+
+
