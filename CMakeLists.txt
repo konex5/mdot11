@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fPIC # -Wall")
-
 set(PROJECT_VERSION "0.0.0")
 
 project(
   golden_binding
   LANGUAGES C CXX
   VERSION "${PROJECT_VERSION}"
-  DESCRIPTION "Hybrid C++/Python Golden Project")
+  DESCRIPTION "fhmdot - Fast Hilbert Matrix Dot")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,18 +25,14 @@ option(PROJECT_SANDBOX "Build Project Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Python Tests" OFF)
 option(PROJECT_PYTHON "Build Python Wrapper (pybind)" OFF)
 option(PROJECT_VALIDATION "Build Validation" OFF)
-option(PROJECT_SANITIZER_ASAN "Sanitizer ASAN" OFF)
-option(PROJECT_SANITIZER_MSAN "Sanitizer MSAN" OFF)
-option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
-option(PROJECT_CODE_COVERAGE "Sanitizer TSAN" OFF)
 option(PROJECT_TBBMALLOC_PROXY
        "enable tbb_malloc_proxy linking (conflicts with pybind)" OFF)
 
-set(PROJECT_CXX_FLAGS_DEBUG -g -Wall -Wextra -fno-omit-frame-pointer
-                            -fno-inline)
-set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
-set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
-set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE} -g)
+# set(PROJECT_CXX_FLAGS_DEBUG -g -Wall -Wextra -fno-omit-frame-pointer
+#                             -fno-inline)
+# set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
+# set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
+# set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE} -g)
 
 add_compile_options(
   ${CMAKE_CXX_FLAGS}
@@ -46,19 +40,6 @@ add_compile_options(
   "$<$<CONFIG:Release>:${PROJECT_CXX_FLAGS_RELEASE}>"
   "$<$<CONFIG:RelWithDebug>:${PROJECT_CXX_FLAGS_RELWITHDEBUG}>"
   "$<$<CONFIG:MinSizeRelease>:${PROJECT_CXX_FLAGS_MINSIZERELEASE}>")
-
-if(${PROJECT_ASAN})
-  set(CMAKE_CXX_FLAGS "-O -g -fsanitize=address")
-endif()
-
-if(${PROJECT_TSAN})
-  set(CMAKE_CXX_FLAGS "-O -g -fsanitize=thread -fopenmp")
-endif()
-
-if(${PROJECT_MSAN})
-  set(CMAKE_CXX_FLAGS
-      "-fsanitize=memory -fPIE -pie -fno-omit-frame-pointer -g -O2")
-endif()
 
 # ##############################################################################
 # FIND PACKAGES
@@ -107,6 +88,7 @@ add_subdirectory(src/fhmdot)
 if(${PROJECT_PYTHON})
   add_subdirectory(src/pybind)
 endif()
+
 # ##############################################################################
 # TESTS and miscelaneous
 # ##############################################################################

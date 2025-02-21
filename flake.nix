@@ -1,60 +1,116 @@
 {
-  description = "A simple C++/Python Binding flake";
+  description = "fhmdot - Fast Hilbert Matrix Dot";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    utils.url = "github:numtide/flake-utils";
-  };
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-  outputs = { self, nixpkgs, utils }:
-    utils.lib.eachSystem [ "x86_64-linux" ] (system:
-      let
-        overlay = pkgs-self: pkgs-super:
-          let
-            inherit (pkgs-super.lib) composeExtensions;
-            pythonPackageOverrides = python-self: python-super: {
-              project_gcc = python-self.callPackage ./derivation.nix {
-                src = self;
-                stdenv = pkgs-self.gccStdenv;
-              };
-              project_clang = python-self.callPackage ./derivation.nix {
-                src = self;
-                stdenv = pkgs-self.clangStdenv;
-              };
-              project_dev = python-self.callPackage ./shell.nix { };
-            };
-          in
-          {
-            python37 = pkgs-super.python37.override (old: {
-              packageOverrides =
-                composeExtensions (old.packageOverrides or (_: _: { }))
-                  pythonPackageOverrides;
-            });
-            python38 = pkgs-super.python38.override (old: {
-              packageOverrides =
-                composeExtensions (old.packageOverrides or (_: _: { }))
-                  pythonPackageOverrides;
-            });
-            python39 = pkgs-super.python39.override (old: {
-              packageOverrides =
-                composeExtensions (old.packageOverrides or (_: _: { }))
-                  pythonPackageOverrides;
-            });
-            python3 = pkgs-self.python38;
-          };
+  outputs = { self, nixpkgs }:
+    let
+      forCustomSystems = custom: f: nixpkgs.lib.genAttrs custom (system: f system);
+      allSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" "x86_64-darwin" ];
+      devSystems = [ "x86_64-linux" "x86_64-darwin" ];
+      forAllSystems = forCustomSystems allSystems;
+      forDevSystems = forCustomSystems devSystems;
 
-        pkgs = import nixpkgs {
+      nixpkgsFor = forAllSystems (system:
+        import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
-          overlays = [ overlay ];
+          config.allowUnfree = true;
+          overlays = [ self.overlay ];
+        }
+      );
+
+      repoName = "fhmdot";
+      repoVersion = nixpkgsFor.x86_64-linux.python3Packages.fhmdot.version;
+      repoDescription = "golden-pybind11 - A simple pybind11 flake";
+    in
+    {
+      overlay = final: prev:
+        let
+          inherit (prev.lib) composeExtensions;
+          pythonPackageOverrides = python-self: python-super: {
+            golden-pybind11 = python-self.callPackage ./derivation.nix {
+              src = self;
+              stdenv = if prev.stdenv.hostPlatform.isDarwin then final.clangStdenv else final.gccStdenv;
+            };
+            golden-pybind11-clang = python-self.callPackage ./derivation.nix {
+              src = self;
+              stdenv = final.clangStdenv;
+            };
+          };
+        in
+        {
+          python37 = prev.python37.override (old: {
+            packageOverrides =
+              composeExtensions (old.packageOverrides or (_: _: { }))
+                pythonPackageOverrides;
+          });
+          python38 = prev.python38.override (old: {
+            packageOverrides =
+              composeExtensions (old.packageOverrides or (_: _: { }))
+                pythonPackageOverrides;
+          });
+          python39 = prev.python39.override (old: {
+            packageOverrides =
+              composeExtensions (old.packageOverrides or (_: _: { }))
+                pythonPackageOverrides;
+          });
+          python3 = final.python39;
         };
-      in
-      {
-        packages = {
-          golden_binding = pkgs.python3Packages.project_gcc;
-          golden_binding_clang = pkgs.python3Packages.project_clang;
+
+      devShell = forDevSystems (system:
+        let pkgs = nixpkgsFor.${system}; in pkgs.callPackage ./shell.nix { }
+      );
+
+      hydraJobs = {
+        build = forDevSystems (system: nixpkgsFor.${system}.python3Packages.golden-pybind11);
+        build-clang = forDevSystems (system: nixpkgsFor.${system}.python3Packages.golden-pybind11-clang);
+
+        release = forDevSystems (system:
+          with nixpkgsFor.${system}; releaseTools.aggregate
+            {
+              name = "${repoName}-release-${repoVersion}";
+              constituents =
+                [
+                  self.hydraJobs.build.${system}
+                  self.hydraJobs.build-clang.${system}
+                  #self.hydraJobs.docker.${system}
+                ] ++ lib.optionals (hostPlatform.isLinux) [
+                  #self.hydraJobs.deb.x86_64-linux
+                  #self.hydraJobs.rpm.x86_64-linux
+                  #self.hydraJobs.coverage.x86_64-linux
+                ];
+              meta.description = "hydraJobs: ${repoDescription}";
+            });
+      };
+      packages = forAllSystems (system:
+        with nixpkgsFor.${system}; {
+          inherit (python3Packages) golden-pybind11 golden-pybind11-clang;
+        });
+
+      defaultPackage = forAllSystems (system:
+        self.packages.${system}.golden-pybind11);
+
+      apps = forAllSystems (system: {
+        golden-pybind11 = {
+          type = "app";
+          program = "${self.packages.${system}.golden-pybind11}/bin/cli_golden";
         };
-        defaultPackage = self.packages.${system}.golden_binding;
-        devShell = pkgs.python3Packages.project_dev;
-      });
+        golden-pybind11-clang = {
+          type = "app";
+          program = "${self.packages.${system}.golden-pybind11-clang}/bin/cli_golden";
+        };
+      }
+      );
+
+      defaultApp = forAllSystems (system: self.apps.${system}.golden-pybind11);
+
+      templates = {
+        golden-pybind11 = {
+          description = "template - ${repoDescription}";
+          path = ./.;
+        };
+      };
+
+      defaultTemplate = self.templates.golden-pybind11;
+    };
 }
