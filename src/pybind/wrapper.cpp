@@ -54,9 +54,12 @@ using num_t = double;
 using real_mps_sh_none = pyhmatrix::pymps<quantum_number_crtp<sh_none>, num_t>;
 using real_mps_sh_u1 = pyhmatrix::pymps<quantum_number_crtp<sh_u1>, num_t>;
 using real_mps_sh_su2 = pyhmatrix::pymps<quantum_number_crtp<sh_su2>, num_t>;
-using complex_mps_sh_none = pyhmatrix::pymps<quantum_number_crtp<sh_none>, std::complex<num_t>>;
-using complex_mps_sh_u1 = pyhmatrix::pymps<quantum_number_crtp<sh_u1>, std::complex<num_t>>;
-using complex_mps_sh_su2 = pyhmatrix::pymps<quantum_number_crtp<sh_su2>, std::complex<num_t>>;
+using complex_mps_sh_none =
+    pyhmatrix::pymps<quantum_number_crtp<sh_none>, std::complex<num_t>>;
+using complex_mps_sh_u1 =
+    pyhmatrix::pymps<quantum_number_crtp<sh_u1>, std::complex<num_t>>;
+using complex_mps_sh_su2 =
+    pyhmatrix::pymps<quantum_number_crtp<sh_su2>, std::complex<num_t>>;
 
 PYBIND11_MODULE(fhm, m) {
   m.doc() = "Fast Hilbert Matrix Dot - a matrix representation (single matrix "
@@ -74,8 +77,8 @@ PYBIND11_MODULE(fhm, m) {
   declare_generic_pymps<complex_mps_sh_su2>(m, "complex_mps_sh_su2");
   m.def(
       "hmat",
-      [](std::string qname =
-             "") -> std::variant<real_mps_sh_none, real_mps_sh_u1, real_mps_sh_su2> {
+      [](std::string qname = "")
+          -> std::variant<real_mps_sh_none, real_mps_sh_u1, real_mps_sh_su2> {
         if (qname == "sh_none") {
           return real_mps_sh_none();
         } else if (qname == "sh_u1") {

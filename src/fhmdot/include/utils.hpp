@@ -1,7 +1,7 @@
 #include <boost/type_traits/is_complex.hpp>
 
-#include <concepts>
 #include <complex>
+#include <concepts>
 
 #ifndef FLOAT_PRECISION
 using data_t = double;
@@ -24,13 +24,10 @@ template <typename T> constexpr bool is_float() {
   }
 }
 
-
-
 // template <typename T>
 // concept floating = std::floating_point<T>;
 // template <typename T>
 // concept complex = std::floating_point<T> || boost::is_complex<T>::value;
-
 
 template <typename T> constexpr char num_character() {
   if (std::is_same<float, T>::value) {
