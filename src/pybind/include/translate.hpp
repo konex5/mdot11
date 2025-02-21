@@ -20,7 +20,8 @@ using pydgbloc_type = std::map<std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>,
 using pydtbloc_type = std::map<std::tuple<uint16_t, uint8_t, uint8_t, uint16_t>,
                                numpy_array<dnum_t>>;
 
-void translate_dmbloc_py2cpp(dmbloc_t &target_cpp, const pydmbloc_type& src_py) {
+void translate_dmbloc_py2cpp(dmbloc_t &target_cpp,
+                             const pydmbloc_type &src_py) {
   for (auto &[src_key, src_value] : src_py) {
     auto src_shape = src_value.shape();
     m_shape_t target_shape = std::tuple<std::size_t, std::size_t, std::size_t>(
@@ -33,7 +34,8 @@ void translate_dmbloc_py2cpp(dmbloc_t &target_cpp, const pydmbloc_type& src_py) 
   }
 }
 
-void translate_dgbloc_py2cpp(dgbloc_t &target_cpp, const pydgbloc_type& src_py) {
+void translate_dgbloc_py2cpp(dgbloc_t &target_cpp,
+                             const pydgbloc_type &src_py) {
   for (auto &[src_key, src_value] : src_py) {
     auto src_shape = src_value.shape();
     g_shape_t target_shape =
@@ -48,7 +50,7 @@ void translate_dgbloc_py2cpp(dgbloc_t &target_cpp, const pydgbloc_type& src_py) 
   }
 }
 
-void translate_dmbloc_cpp2py(pydmbloc_type &target_py, dmbloc_t& src_cpp) {
+void translate_dmbloc_cpp2py(pydmbloc_type &target_py, dmbloc_t &src_cpp) {
   for (auto &[src_key, src_value] : src_cpp) {
     auto src_shape = src_value.first;
     py::ssize_t target_shape[3] = {
