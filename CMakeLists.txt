@@ -81,6 +81,18 @@ configure_file("${CMAKE_SOURCE_DIR}/src/fhmdot/include/file_header.hpp.in"
                "${CMAKE_BINARY_DIR}/fhmdot/include/file_header.hpp")
 include_directories("${CMAKE_SOURCE_DIR}/src" ${CMAKE_BINARY_DIR})
 
+
+# Installation of headers
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/fhmdot
+  DESTINATION "include" 
+  PATTERN "*.in" EXCLUDE PATTERN "*.cpp" EXCLUDE  PATTERN "CMakeLists.txt" EXCLUDE)
+
+# Installation of configured headers
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fhmdot
+  DESTINATION "include"
+  PATTERN "*.hpp")
+
+
 # ##############################################################################
 # PROJECT
 # ##############################################################################

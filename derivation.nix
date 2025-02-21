@@ -36,6 +36,7 @@ in
     enableParallelChecking = true;
 
     installPhase = "ninja install";
+    outputs = ["out" "include" "lib"];
   };
 
   pyfhmdot = buildPythonPackage {
