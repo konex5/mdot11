@@ -13,10 +13,11 @@ def test_mdot_routine_lanczos_mm(make_random_mps, make_env_mm):
     mps_right = make_random_mps(5, 2)
     mps_middle = make_random_mps(5, 2)
     from pyfhmdot.intense.mul_mp import multiply_mp
+
     th_middle = {}
-    multiply_mp(th_middle,mps_middle,mps_middle,[2],[0])
+    multiply_mp(th_middle, mps_middle, mps_middle, [2], [0])
     env_bloc = make_env_mm(mps_left, mps_right)
-    
+
     import mdot_routine
 
     mps = mdot_routine.minimize_lanczos_on_mm(env_bloc, th_middle, 100, 10**-2)

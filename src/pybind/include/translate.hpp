@@ -54,7 +54,6 @@ void translate_dtbloc_py2cpp(dtbloc_t &target_cpp,
   }
 }
 
-
 void translate_dmenvbloc_py2cpp(dmenvbloc_t &target_cpp,
                                 const pydmenvbloc_type &src_py) {
   for (auto &[src_key, src_value] : src_py) {
@@ -75,12 +74,12 @@ void translate_dmenvbloc_py2cpp(dmenvbloc_t &target_cpp,
 }
 
 void translate_dmmenvbloc_py2cpp(dmmenvbloc_t &target_cpp,
-                                const pydmmenvbloc_type &src_py) {
+                                 const pydmmenvbloc_type &src_py) {
   for (auto &[src_key, src_value] : src_py) {
     auto src_shape = src_value.shape();
     mmenv_shape_t target_shape =
         std::tuple<std::size_t, std::size_t, std::size_t, std::size_t,
-                   std::size_t, std::size_t,std::size_t,std::size_t>(
+                   std::size_t, std::size_t, std::size_t, std::size_t>(
             static_cast<std::size_t>(src_shape[0]),
             static_cast<std::size_t>(src_shape[1]),
             static_cast<std::size_t>(src_shape[2]),

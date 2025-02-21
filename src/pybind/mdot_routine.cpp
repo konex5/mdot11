@@ -103,9 +103,9 @@ pydmbloc_type py_minimize_lanczos_on_m(const pydmenvbloc_type env_bloc,
 }
 
 pydtbloc_type py_minimize_lanczos_on_mm(const pydmmenvbloc_type env_bloc,
-                                       pydtbloc_type mbloc,
-                                       const size_t max_iteration,
-                                       const dnum_t tolerance) {
+                                        pydtbloc_type mbloc,
+                                        const size_t max_iteration,
+                                        const dnum_t tolerance) {
   dtbloc_t mp_in;
   translate_dtbloc_py2cpp(mp_in, mbloc);
   dmmenvbloc_t env_bloc_in;
@@ -116,7 +116,6 @@ pydtbloc_type py_minimize_lanczos_on_mm(const pydmmenvbloc_type env_bloc,
   translate_dtbloc_cpp2py(dst_out, mp_out);
   return dst_out;
 }
-
 
 PYBIND11_MODULE(mdot_routine, m) {
   m.doc() = "routine to speedup code execution";
@@ -138,6 +137,6 @@ PYBIND11_MODULE(mdot_routine, m) {
   m.def("minimize_lanczos_on_m", &py_minimize_lanczos_on_m, py::arg("env_bloc"),
         py::arg("mps"), py::arg("max_iteration"), py::arg("error_tolerance"));
   m.def("minimize_lanczos_on_mm", &py_minimize_lanczos_on_mm,
-      py::arg("env_bloc"), py::arg("theta"), py::arg("max_iteration"),
-      py::arg("error_tolerance"));
+        py::arg("env_bloc"), py::arg("theta"), py::arg("max_iteration"),
+        py::arg("error_tolerance"));
 }
