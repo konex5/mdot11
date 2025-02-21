@@ -1,16 +1,11 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-//#include <pybind11/stl_bind.h>
+
+#include <exception>
+#include <string>
 
 #include "mdot/include/babel_type.hpp"
-#include <complex>
-#include <exception>
-#include <iostream>
-#include <map>
-#include <string>
-#include <tuple>
-
 #include "mdot/include/blocs_static.hpp"
 #include "mdot/include/operators_static.hpp"
 
@@ -103,7 +98,7 @@ pyzblocs_type py_single_operator_blocs_cplx(std::string name) {
   std::vector<std::tuple<index_t, index_t>> shapes;
   std::vector<std::vector<znum_t>> vecs;
 
-  if (name == "sh-id") {
+  if (name == "sh_id-cplx_u1") {
     nb_blocs = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::nb_blocs;
     indices = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_indices();
     sizes = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_sizes();
@@ -111,7 +106,7 @@ pyzblocs_type py_single_operator_blocs_cplx(std::string name) {
     auto arrs = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_arrays();
     for (index_t i = 0; i < nb_blocs; i++)
       vecs.push_back(std::vector<znum_t>(arrs[i].begin(), arrs[i].end()));
-  } else if (name == "sh-sy") {
+  } else if (name == "sh_sy_u1") {
     nb_blocs = mdot::cplx_sh_blocs_crtp<mdot::sh_sy_u1>::nb_blocs;
     indices = mdot::cplx_sh_blocs_crtp<mdot::sh_sy_u1>::get_indices();
     sizes = mdot::cplx_sh_blocs_crtp<mdot::sh_sy_u1>::get_sizes();
@@ -130,12 +125,15 @@ pyzblocs_type py_single_operator_blocs_cplx(std::string name) {
   pyzblocs_type output;
 
   for (index_t i = 0; i < nb_blocs; i++) {
-    auto deallocator = py::capsule(&vecs[i], [](void *ptr) {
-      auto vec_ptr = reinterpret_cast<std::vector<znum_t> *>(ptr);
-      vec_ptr->clear();
+    std::vector<znum_t> * vec_ptr = new std::vector<znum_t>;
+    vec_ptr->swap(vecs[i]);
+    auto deallocator = py::capsule(vec_ptr, [](void *ptr) {
+      auto v_ptr = reinterpret_cast<std::vector<znum_t> *>(ptr);
+      v_ptr->clear();
+      delete v_ptr;
     });
-    numpy_array<znum_t> np_out(sizes[i], vecs[i].data(), deallocator);
-    np_out.resize({std::get<0>(shapes[i]), std::get<1>(shapes[i])});
+    py::ssize_t shape[2]{std::get<0>(shapes[i]), std::get<1>(shapes[i])};
+    numpy_array<znum_t> np_out(shape, vec_ptr->data(), deallocator);
     output[{std::get<0>(indices[i]), std::get<1>(indices[i])}] = np_out;
   }
   return output;
@@ -185,8 +183,6 @@ numpy_array<double> py_single_operator_real(std::string name) {
   }
   //
   auto deallocator = py::capsule(&vec, [](void *f) {
-    // py::detail::get_internals();
-    std::cout << "cleaning!" << std::endl;
     auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(f);
     vec_ptr->clear();
   });
@@ -220,7 +216,6 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
   //
   auto deallocator = py::capsule(&vec, [](void *f) {
     // py::detail::get_internals();
-    std::cout << "cleaning!" << std::endl;
     auto vec_ptr = reinterpret_cast<std::vector<znum_t> *>(f);
     vec_ptr->clear();
   });
@@ -232,12 +227,8 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
 PYBIND11_MODULE(mdot_operators, m) {
   m.doc() = "a pybind11 for quantum simulations";
 
-  m.def("single_operator_blocs_real", &py_single_operator_blocs_real,
-        py::arg("name") = "sh-id", "return a dictionary of blocs.");
+  m.def("single_operator_real", &py_single_operator_blocs_real,
+        py::arg("name") = "sh_id_u1", "return a dictionary of blocs.");
   m.def("single_operator_blocs_cplx", &py_single_operator_blocs_cplx,
-        py::arg("name") = "sh-id", "return a dictionary of blocs.");
-  m.def("single_operator_real", &py_single_operator_real,
-        py::arg("name") = "sh-id", "return a dense single operator.");
-  m.def("single_operator_cplx", &py_single_operator_cplx,
-        py::arg("name") = "sh-id", "return a dense single operator.");
+        py::arg("name") = "sh_id-cplx_u1", "return a dictionary of blocs.");
 }
