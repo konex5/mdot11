@@ -19,8 +19,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(PROJECT_TESTS "Build Cpp Tests" ON)
 option(PROJECT_PRECISION_FLOAT32 "Build with floating point 32" OFF)
-# option(PROJECT_QNUM "Build with spin sz=" 0.5)
-# option(PROJECT_QNUM_DOUBLED "Build for a doubled Hilbert space" ON)
+# option(PROJECT_QNUM "Build with spin sz=" 0.5) option(PROJECT_QNUM_DOUBLED
+# "Build for a doubled Hilbert space" ON)
 option(PROJECT_SANDBOX "Build Project Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Python Tests" OFF)
 option(PROJECT_VALIDATION "Build Python Validation" OFF)
@@ -66,7 +66,10 @@ find_package(
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
 # * Pybind11
-find_package(Python COMPONENTS Interpreter Development REQUIRED)
+find_package(
+  Python
+  COMPONENTS Interpreter Development
+  REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
 
 if(NOT DEFINED CMAKE_INSTALL_PYTHON_SITE_PACKAGE)
@@ -78,8 +81,10 @@ endif()
 # ##############################################################################
 # INCLUDE
 # ##############################################################################
-configure_file("${CMAKE_SOURCE_DIR}/src/utils/static.hpp.in" "${CMAKE_BINARY_DIR}/static.hpp")
-configure_file("${CMAKE_SOURCE_DIR}/src/fhmdot/include/file_header.hpp.in" "${CMAKE_BINARY_DIR}/fhmdot/include/file_header.hpp")
+configure_file("${CMAKE_SOURCE_DIR}/src/utils/static.hpp.in"
+               "${CMAKE_BINARY_DIR}/static.hpp")
+configure_file("${CMAKE_SOURCE_DIR}/src/fhmdot/include/file_header.hpp.in"
+               "${CMAKE_BINARY_DIR}/fhmdot/include/file_header.hpp")
 include_directories("${CMAKE_SOURCE_DIR}/src" ${CMAKE_BINARY_DIR})
 
 # ##############################################################################
