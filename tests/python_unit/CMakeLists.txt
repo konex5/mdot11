@@ -6,7 +6,7 @@ add_custom_target(
     "export PYTHONPATH=$<TARGET_FILE_DIR:mdot_operators>:$PYTHONPATH" && echo
   COMMENT "look for python interface"
   VERBATIM)
-add_dependencies(python_interface_msg fmd_operators)
+add_dependencies(python_interface_msg mdot_operators)
 
 add_test(
   NAME pytest_interface
