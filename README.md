@@ -1,8 +1,8 @@
 # Fast Hilbert Matrix :arrow_backward: :zap: :red_circle: :zap: :arrow_forward:
 
-Welcome to `fhmdot` (Fast Hilbert Matrix​ :arrow_backward: :zap:
+Welcome to `mdot11` (Matrix​ :arrow_backward: :zap:
 :red_circle: :zap: :arrow_forward:), a quantum number agnostic routine
-for differential gate application.
+for differential gate application interfaced in python.
 
 ```
  ┌┴─────┴┐ 
@@ -16,10 +16,10 @@ for differential gate application.
 
 ## Abstract
 
-`fhmdot` has two components :
+`mdot11` claims to :
 
-* a library dedicated to the gate application <!-- which could be chained (:smirk_cat:) which give a new dimension for quantum gate application simulations.​ -->
-* a python interface to quickly use the implementation.
+* interface the *mdot* library
+* provide a way to optimize python code when needed.
 
 ## Design
 
@@ -31,22 +31,15 @@ Quantum numbers of local dimension `d` are creating a difficult tensor
 optimization problem.  According to the benchmarks, pools of
 dimensions `~ 2*d+1` are increasing the application in practice.
 
-## Performance
-
-We benchmark the code using `hyperfine`
-
-* Internal dimension `k = 1, 8, 16, 32, 64, 128, 256, 516, 1028, 2056, 4112, 8224`
-* Quantum Numbers `QN='sh-None', 'sh-U1', 'so-None', 'so-U1', 'ldsh-None', 'ldsh-U1'`
-* Random data in the fixed structure of `A`, `B` and `T`
-* Random data in the different quantum sectors `p = 1, 2, 3, 4, 5, 6, 8, 10`
-* Different parallel token and platforms
-
-
-
 ### In-depth details using the python interface
 
+Once compiled, go to the binary folder and import it
 
-
+```bash
+$ cd binaryFolder
+$ python
+>>> import mdot_operators
+```
 
 ## Examples
 

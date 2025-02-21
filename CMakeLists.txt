@@ -6,7 +6,7 @@ project(
   golden_binding
   LANGUAGES C CXX
   VERSION "${PROJECT_VERSION}"
-  DESCRIPTION "mdotbind - Binding for Matrix Dot")
+  DESCRIPTION "mdot11 - Binding for Matrix Dot")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
