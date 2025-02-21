@@ -37,14 +37,15 @@ void translate_dmbloc_cpp2py(pydmbloc_type &target_py, dmbloc_t src_cpp) {
         static_cast<py::ssize_t>(std::get<0>(src_shape)),
         static_cast<py::ssize_t>(std::get<1>(src_shape)),
         static_cast<py::ssize_t>(std::get<2>(src_shape))};
-    py::ssize_t np_size = src_value.second.size();
-    auto ptr = src_value.second.data();
-    auto deallocator = py::capsule(&src_value.second, [](void *ptr) {
-      auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
-      // std::cout << "vec_ptr:" << vec_ptr;
-      vec_ptr->clear();
+    // new is mandatory for python memory usage
+    std::vector<dnum_t> *vec_ptr = new std::vector<dnum_t>;
+    vec_ptr->swap(src_value.second);
+    auto deallocator = py::capsule(vec_ptr, [](void *ptr) {
+      auto v_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
+      v_ptr->clear();
+      delete v_ptr;
     });
-    numpy_array<dnum_t> np_target_array(np_size, ptr, deallocator);
+    numpy_array<dnum_t> np_target_array(target_shape, vec_ptr->data(), deallocator);
     target_py[src_key] = np_target_array;
   }
 }
