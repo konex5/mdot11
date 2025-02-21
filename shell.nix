@@ -12,7 +12,7 @@ let
     vscode-with-extensions.override {
       vscodeExtensions = with vscode-extensions;
         [
-          bbenoist.Nix
+          bbenoist.nix
           eamodio.gitlens
           ms-vscode.cpptools
           ms-python.python
