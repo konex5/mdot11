@@ -36,14 +36,13 @@ in
     enableParallelChecking = true;
 
     installPhase = "ninja install";
-    # outputs = [ "out" "include" "lib" ];
   };
 
   pyfhmdot = buildPythonPackage {
     pname = "pyfhmdot";
-    version = "0.0.0";
+    inherit src version;
+
     format = "other";
-    inherit src;
 
     nativeBuildInputs = [ cmakeMinimal ninja ];
     buildInputs = [ boost17x pybind11 tbb ];
