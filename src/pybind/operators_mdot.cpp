@@ -4,13 +4,46 @@
 
 
 #include <string>
+#include <map>
+#include <tuple>
+#include <complex>
 #include "mdot/include/babel_type.hpp"
+
+
 #include "mdot/include/operators.hpp"
 
 namespace py = pybind11;
 
 template <typename T>
 using numpy_array = py::array_t<T, py::array::c_style>;
+
+using pydblocs_type = std::map<std::tuple<int64_t, int64_t>, numpy_array<double>>;
+using pyzblocs_type = std::map<std::tuple<int64_t, int64_t>, numpy_array<double>>;
+
+
+pydblocs_type single_operator_re(std::string name, std::string qbasis) {
+    //mdot::
+    auto test = single_operator_real(name,qbasis);
+    dnum_t normalisation = std::get<1>(test);
+    auto blocs = std::get<0>(test);
+    //
+    pydblocs_type output;
+    std::tuple<int64_t, int64_t> indices;
+    std::vector<dnum_t> vec_arr;
+    //
+    
+    for (auto const& x : blocs) {
+        indices = {1,1};//{reinterpret_cast<int64_t>(x.first.first),reinterpret_cast<int64_t>(x.first.second)};
+        vec_arr = x.second;
+        std::size_t n = vec_arr.size();
+        auto ptr = vec_arr.data();
+        auto fake_deallocator = py::capsule(ptr, [](void *ptr) { });
+        numpy_array<dnum_t> np_out(n, ptr, fake_deallocator);
+        output[indices] = np_out;
+    }
+    
+    return output;
+}
 
 numpy_array<dnum_t> single_operator_r(std::string name, std::string qbasis) {
     //mdot::
@@ -24,7 +57,9 @@ numpy_array<dnum_t> single_operator_r(std::string name, std::string qbasis) {
     return np_out;
 }
 
+
 PYBIND11_MODULE(operators_mdot, m) {
     m.doc() = "a pybind11 for quantum simulations";
     m.def("single_operator_r", &single_operator_r, "return operators");
+    m.def("single_operator_re", &single_operator_re, "return operators");
 }

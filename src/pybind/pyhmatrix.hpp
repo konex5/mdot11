@@ -36,11 +36,11 @@ public:
   pyhmat_type to_python(){};
 };
 
-template <class Q, typename T> class pympo {
+// template <class Q, typename T> class pympo {
 
-public:
-  typedef Q qnum_type;
-  typedef T value_type;
-};
+// public:
+//   typedef Q qnum_type;
+//   typedef T value_type;
+// };
 
 } // namespace pyhmatrix
