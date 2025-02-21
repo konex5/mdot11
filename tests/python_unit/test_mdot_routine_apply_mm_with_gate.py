@@ -72,7 +72,14 @@ def test_mdot_routine_apply_mm(make_random_blocs, make_gate):
         direction_right=1,
     )
     left, right, dw = mdot_routine.apply_gate_on_mm(
-        deepcopy(mps_left), deepcopy(mps_right), deepcopy(gate), 8, 10**-62, False, 1, 1
+        deepcopy(mps_left),
+        deepcopy(mps_right),
+        deepcopy(gate),
+        8,
+        10**-62,
+        False,
+        1,
+        1,
     )
     assert abs(dw - dw_dict["dw_one_serie"]) < 10**-8
     for key in left.keys():

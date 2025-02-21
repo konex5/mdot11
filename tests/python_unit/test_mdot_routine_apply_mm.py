@@ -11,6 +11,7 @@ def test_mdot_routine_apply_mm_empty():
 def test_mdot_routine_apply_mm_minimal(make_random_blocs):
     import mdot_routine
     from pyfhmdot.algorithm import apply_mm
+    from pyfhmdot.intense.mul_mp import multiply_mp
     import numpy as np
 
     a = make_random_blocs(1, 1)
@@ -34,6 +35,13 @@ def test_mdot_routine_apply_mm_minimal(make_random_blocs):
         assert np.all(np.abs(np.abs(left[key]) - np.abs(m_left[key])) < 10**-8)
     for key in right.keys():
         assert np.all(np.abs(np.abs(right[key]) - np.abs(m_right[key])) < 10**-8)
+
+    m_dst = {}
+    multiply_mp(m_dst, deepcopy(m_left), deepcopy(m_right), [2], [0])
+    dst = {}
+    multiply_mp(dst, deepcopy(left), deepcopy(right), [2], [0])
+    for key in m_dst.keys():
+        assert np.all(np.abs(m_dst[key] - dst[key]) < 10**-8)
 
 
 def test_mdot_routine_apply_mm(make_random_blocs):
@@ -72,4 +80,4 @@ def test_mdot_routine_apply_mm(make_random_blocs):
     dst = {}
     multiply_mp(dst, left, right, [2], [0])
     for key in m_dst.keys():
-        np.all(np.abs(m_dst[key] - dst[key]) < 10**-8)
+        assert np.all(np.abs(m_dst[key] - dst[key]) < 10**-8)
