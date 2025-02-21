@@ -8,6 +8,7 @@
 , numpy ? null
 , pybind11 ? null
 , pytest ? null
+, src ? nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.
 , version ? "0.0.1"
 }:
 let
@@ -42,7 +43,7 @@ in
 buildPythonPackage {
   name = "pyfhmdot-${version}";
   inherit version;
-  src = nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.;
+  inherit src;
 
   format = "other";
 

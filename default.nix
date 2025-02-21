@@ -6,6 +6,7 @@
       }
     )
     { }
+, mdotPath
 , clangSupport ? true
 }:
 
@@ -15,6 +16,11 @@ python3Packages.callPackage ./derivation.nix {
   stdenv = if clangSupport then clangStdenv else gccStdenv;
   mdot = callPackage ../mdot/derivation.nix {
     stdenv = if clangSupport then clangStdenv else gccStdenv;
-    version = "0.0.2";
+
+    src = fetchgit {
+      url = mdotPath;
+      sha256 = "sha256-P/SZ2/3rErb3YQomF/rBtpZRq2UKLBj3f5a+uTxH7fU=";
+      rev = "v0.0.2";
+    };
   };
 }
