@@ -39,7 +39,7 @@ let
         ];
     });
   pythonEnv = (with pythonPackages; # note that checkInputs are missing!
-    [ pybind11 ] ++ [
+    [ numpy pybind11 ] ++ [
       #------------#
       # additional #
       #------------#
@@ -75,6 +75,7 @@ in (pkgs.mkShell.override { inherit stdenv; }) rec {
     [ cmake ninja ] ++ [
       # stdenv.cc.cc
       # libcxxabi	      
+      # astyle
       bashCompletion
       cacert
       clang-tools
