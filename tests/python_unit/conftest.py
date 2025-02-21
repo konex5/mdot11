@@ -103,7 +103,7 @@ def make_gate():
     # for key in new_theta:
     #     old_theta[key] = new_theta[key][::-1, ::-1, ::-1, ::-1]
 
-    return old_theta, new_theta
+    return lambda: new_theta
 
 
 @pytest.fixture
