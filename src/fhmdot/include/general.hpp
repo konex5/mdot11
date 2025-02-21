@@ -75,11 +75,13 @@ create_maximal_entangled_state(std::size_t size, std::size_t spin_name,
       tmp_vec = std::vector<dnum_t>(arr.begin(), arr.end());
       // dmps.push_back({tmp_indices, tmp_vec});
     } else if (spin_name == 0 && qn_name == 1) {
-      // auto tmp_tmp_index =
-      // mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_indices(); tmp_indices =
-      // {0,std::get<0>(tmp_tmp_index[0]),std::get<1>(tmp_tmp_index[0]),0}; auto
-      // tmp_blocs = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::times(1. /
-      // sqrt(2));
+      auto tmp_blocs = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_blocs();
+      dtbloc_t dst_blocs;
+      for (auto &[key, val] : tmp_blocs) {
+        // dst_blocs[{0,std::get<0>(key),std::get<1>(key),0}] =
+        // {std::get<0>(val),{1,std::get<0>(std::get<1>(val)),std::get<1>(std::get<1>(val)),1},std::get<2>(val)};
+      }
+      // dmps.push_back(dst_blocs)
     }
   }
   return {coef, dmps};
