@@ -52,7 +52,6 @@ let
       ipython
       pip
       pytest
-      python-language-server
       mypy
       pylint
       flake8
@@ -66,7 +65,8 @@ let
       nbformat
       nbconvert
       nbsphinx
-    ]);
+    ] ++ pkgs.lib.optionals (!isPy39) [ python-language-server ]
+  );
 in
 with pkgs;
 (mkShell.override { inherit stdenv; }) rec {
