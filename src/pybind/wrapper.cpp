@@ -1,3 +1,5 @@
+#include <complex>
+
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -47,9 +49,14 @@ numpy_array<data_t> check(numpy_array<data_t> np_in) {
   return np_out;
 }
 
-using mps_sh_none = pyhmatrix::pymps<quantum_number_crtp<sh_none>, data_t>;
-using mps_sh_u1 = pyhmatrix::pymps<quantum_number_crtp<sh_u1>, data_t>;
-using mps_sh_su2 = pyhmatrix::pymps<quantum_number_crtp<sh_su2>, data_t>;
+using num_t = double;
+
+using real_mps_sh_none = pyhmatrix::pymps<quantum_number_crtp<sh_none>, num_t>;
+using real_mps_sh_u1 = pyhmatrix::pymps<quantum_number_crtp<sh_u1>, num_t>;
+using real_mps_sh_su2 = pyhmatrix::pymps<quantum_number_crtp<sh_su2>, num_t>;
+using complex_mps_sh_none = pyhmatrix::pymps<quantum_number_crtp<sh_none>, std::complex<num_t>>;
+using complex_mps_sh_u1 = pyhmatrix::pymps<quantum_number_crtp<sh_u1>, std::complex<num_t>>;
+using complex_mps_sh_su2 = pyhmatrix::pymps<quantum_number_crtp<sh_su2>, std::complex<num_t>>;
 
 PYBIND11_MODULE(fhm, m) {
   m.doc() = "Fast Hilbert Matrix Dot - a matrix representation (single matrix "
@@ -59,19 +66,22 @@ PYBIND11_MODULE(fhm, m) {
   m.def("is_floating_precision", &is_floating_precision,
         "check if library precision is fixed to float 32 (if not, float64 is "
         "used)");
-  declare_generic_pymps<mps_sh_none>(m, "sh_none");
-  declare_generic_pymps<mps_sh_u1>(m, "sh_u1");
-  declare_generic_pymps<mps_sh_su2>(m, "sh_su2");
+  declare_generic_pymps<real_mps_sh_none>(m, "real_mps_sh_none");
+  declare_generic_pymps<real_mps_sh_u1>(m, "real_mps_sh_u1");
+  declare_generic_pymps<real_mps_sh_su2>(m, "real_mps_sh_su2");
+  declare_generic_pymps<complex_mps_sh_none>(m, "complex_mps_sh_none");
+  declare_generic_pymps<complex_mps_sh_u1>(m, "complex_mps_sh_u1");
+  declare_generic_pymps<complex_mps_sh_su2>(m, "complex_mps_sh_su2");
   m.def(
       "hmat",
       [](std::string qname =
-             "") -> std::variant<mps_sh_none, mps_sh_u1, mps_sh_su2> {
+             "") -> std::variant<real_mps_sh_none, real_mps_sh_u1, real_mps_sh_su2> {
         if (qname == "sh_none") {
-          return mps_sh_none();
+          return real_mps_sh_none();
         } else if (qname == "sh_u1") {
-          return mps_sh_u1();
+          return real_mps_sh_u1();
         } else if (qname == "sh_su2") {
-          return mps_sh_su2();
+          return real_mps_sh_su2();
         } else {
           throw std::range_error("Model Error.\n\t\t- all models are listed in "
                                  "the python module.");

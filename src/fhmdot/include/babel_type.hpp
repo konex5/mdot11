@@ -1,5 +1,5 @@
 #pragma once
-
+#include <complex>
 #include <vector>
 
 using qn_type = int8_t;
@@ -11,6 +11,21 @@ using data_t = double;
 #else
 using data_t = float;
 #endif
+
+
+template <typename, typename = void>
+struct real_type;
+
+template <typename T>
+struct real_type<T, std::enable_if_t<std::is_arithmetic_v<T>>>
+ { using type = T; };
+
+template <typename T>
+struct real_type<std::complex<T>, void>
+ { using type = T; };
+
+
+
 
 using num_t = data_t;
 using arr_t = std::vector<data_t>;

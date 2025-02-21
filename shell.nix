@@ -70,14 +70,14 @@ let
 in
 with pkgs;
 (mkShell.override { inherit stdenv; }) rec {
-  buildInputs =
-    [ boost17x tbb spdlog ] ++ [
-      # zstd zlib
-    ] ++ [ pythonEnv ] ++ lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
+  buildInputs = [ boost17x tbb spdlog ] ++ [
+    # zstd zlib
+  ] ++ [ pythonEnv ] ++ lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
   nativeBuildInputs =
     [ cmake ninja ] ++ [
       bash-completion
       #fd
+      less
       more
       cacert
       which
@@ -97,6 +97,7 @@ with pkgs;
       pkg-config
       emacs-nox
       vscodeExt
+      vim
       pandoc
       typora
       vscodeExt
