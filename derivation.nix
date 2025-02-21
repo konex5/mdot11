@@ -9,6 +9,7 @@
 , pytest ? null
 , sphinx ? null
 , sphinx_rtd_theme ? null
+, tbb
 }:
 let
   version = "0.0.0";
@@ -20,7 +21,7 @@ in
     inherit src version;
 
     nativeBuildInputs = [ cmakeMinimal ninja ];
-    buildInputs = [ boost17x ];
+    buildInputs = [ boost17x tbb ];
 
     cmakeFlags = [
       "-DCMAKE_BUILD_TYPE=Release"
@@ -44,7 +45,7 @@ in
     inherit src;
 
     nativeBuildInputs = [ cmakeMinimal ninja ];
-    buildInputs = [ boost17x pybind11 ];
+    buildInputs = [ boost17x pybind11 tbb ];
     propagatedBuildInputs = [ numpy ];
     checkInputs = [ pytest ];
 
