@@ -1,6 +1,7 @@
 /// yet other file I/O
 
 #include <algorithm>
+#include <boost/type_traits/is_complex.hpp>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -69,8 +70,33 @@ void write_array(std::ofstream &ofs, std::vector<T> &arr) {
 
 // reading vector to a file
 template <typename T> void read_array(std::ifstream &ifs, std::vector<T> &arr) {
-  std::istreambuf_iterator<char> source(ifs);
-  std::copy(source, std::istreambuf_iterator<char>(), std::back_inserter(arr));
+  auto start = std::istreambuf_iterator<char>(ifs);
+  auto stop = std::istreambuf_iterator<char>();
+  std::copy(start, stop, std::back_inserter(arr));
+}
+
+template <typename M> void print_mp(std::ifstream &ifs, M &smp) {
+  // for (index, shape, arr) {
+  //   write_tuple(ifs, index);
+  //   write_tuple(ifs, shape);
+  //   write_array(ifs, arr);
+  // }
+}
+
+template <typename M> void write_mp(std::ifstream &ifs, M &smp) {
+  // for (index, shape, arr) {
+  //   write_tuple(ifs, index);
+  //   write_tuple(ifs, shape);
+  //   write_array(ifs, arr);
+  // }
+}
+
+template <typename M> void read_mp(std::ifstream &ifs, M &smp) {
+  // for (index, shape, arr) {
+  //   write_tuple(ifs, index);
+  //   write_tuple(ifs, shape);
+  //   write_array(ifs, arr);
+  // }
 }
 
 } // namespace yofi

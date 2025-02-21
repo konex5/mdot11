@@ -56,8 +56,9 @@ BOOST_AUTO_TEST_CASE(unittest_yofi_tuple) {
 #include <complex>
 
 typedef boost::mpl::list<float,
-                         double> // std::complex<float>, std::complex<double>>
-    values;
+                         double> //, typename std::complex<float>> //,
+                                 //std::complex<double>>
+                                     values;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(unittest_yofi_array, T, values) {
 

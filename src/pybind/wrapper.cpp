@@ -2,7 +2,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "pybind/hmatrix.hpp"
+#include "pybind/pyhmatrix.hpp"
 #include "pybind/utils.hpp"
 
 #include "fhmdot/include/babel_type.hpp"
@@ -44,9 +44,9 @@ numpy_array<data_t> check(numpy_array<data_t> np_in) {
   return np_out;
 }
 
-using mps_sh_none = hmatrix::mps<quantum_number_crtp<sh_none>, data_t>;
-using mps_sh_u1 = hmatrix::mps<quantum_number_crtp<sh_u1>, data_t>;
-using mps_sh_su2 = hmatrix::mps<quantum_number_crtp<sh_su2>, data_t>;
+using mps_sh_none = pyhmatrix::pymps<quantum_number_crtp<sh_none>, data_t>;
+using mps_sh_u1 = pyhmatrix::pymps<quantum_number_crtp<sh_u1>, data_t>;
+using mps_sh_su2 = pyhmatrix::pymps<quantum_number_crtp<sh_su2>, data_t>;
 
 PYBIND11_MODULE(fhm, m) {
   m.doc() = "Fast Hilbert Matrix Dot - a matrix representation (single matrix "

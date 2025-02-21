@@ -7,31 +7,32 @@
 #include <pybind11/stl.h>
 //#include <vector>
 
-// #include "fhmdot/include/yofi.hpp"
+#include "fhmdot/include/hmatrix.hpp"
 
-namespace hmatrix {
-template <class Q, typename T> class mps {
+// using namespace fhmdot::hmatrix;
+
+namespace pyhmatrix {
+template <class Q, typename T> class pymps : fhmdot::hmatrix::mps<Q, T> {
 public:
   typedef Q qnum_type;
   typedef T value_type;
-  typedef std::tuple<int, int, int> index_type;
+  typedef uint16_t index_t;
+  typedef uint16_t shape_t;
+  typedef std::tuple<index_t, index_t, index_t> index_type;
+  typedef std::tuple<shape_t, shape_t, shape_t> shape_type;
+  typedef std::tuple<index_t, index_t, index_t, index_t, index_t, index_t>
+      index_shape_type;
 
   typedef pybind11::array_t<value_type, pybind11::array::c_style> numpy_array;
-  typedef typename std::list<std::pair<index_type, numpy_array>> hmat_type;
+  typedef typename std::pair<index_shape_type, numpy_array> pyhmat_type;
 
-  mps() {}
+  pymps() {}
 
   // void from_python(hmat_type mps_in){};
   // hmat_type to_python(){};
-
-  // void load(std::string filename){};
-  // void save(std::string filename){};
-
-private:
-  hmat_type arr_;
 };
 
-template <class Q, typename T> class mpo {
+template <class Q, typename T> class pympo {
 
 public:
   typedef Q qnum_type;
@@ -47,4 +48,4 @@ private:
   // std::map<std::tuple<4>, std::vector<value_type>> arr_;
 };
 
-} // namespace hmatrix
+} // namespace pyhmatrix
