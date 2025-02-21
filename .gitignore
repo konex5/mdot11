@@ -295,3 +295,4 @@ b*
 tests/sandbox
 docs/build*
 result
+.trash_*
