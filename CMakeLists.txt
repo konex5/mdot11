@@ -6,7 +6,7 @@ project(
   golden_binding
   LANGUAGES C CXX
   VERSION "${PROJECT_VERSION}"
-  DESCRIPTION "fhmdot - Fast Hilbert Matrix Dot")
+  DESCRIPTION "mdotbind - Binding for Matrix Dot")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
