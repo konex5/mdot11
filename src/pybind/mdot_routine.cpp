@@ -71,7 +71,7 @@ py_apply_mm(pydmbloc_type lhs, pydmbloc_type rhs, const index_t chi_max,
 PYBIND11_MODULE(mdot_routine, m) {
   m.doc() = "routine to speedup code execution";
   m.def("apply_mm", &py_apply_mm, py::arg("mps_left"), py::arg("mps_right"),
-        py::arg("chi_max"), py::arg("normalize"), py::arg("eps"),
+        py::arg("chi_max"), py::arg("eps"), py::arg("normalize"),
         py::arg("is_um"), py::arg("direction_right"));
   m.def("mm_to_theta_no_gate", &py_mm_to_theta_no_gate, py::arg("lhs_blocs"),
         py::arg("rhs_blocs"), py::arg("conserve_left_right") = false,
