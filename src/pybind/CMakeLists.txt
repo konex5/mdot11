@@ -1,6 +1,6 @@
 # * BUILD
-pybind11_add_module(mdot_operators mdot_operators.cpp)
+pybind11_add_module(fmd_operators fmd_operators.cpp)
 
 # * INSTALLATION
-install(TARGETS mdot_operators DESTINATION bin)
-install(TARGETS mdot_operators DESTINATION lib/python3.9/site-packages)
+install(TARGETS fmd_operators DESTINATION bin)
+install(TARGETS fmd_operators DESTINATION lib/python3.9/site-packages)

@@ -227,7 +227,7 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
   return np_out;
 }
 
-PYBIND11_MODULE(mdot_operators, m) {
+PYBIND11_MODULE(fmd_operators, m) {
   m.doc() = "a pybind11 for quantum simulations";
 
   m.def("single_operator_blocs_real", &py_single_operator_blocs_real,
