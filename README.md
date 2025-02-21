@@ -66,3 +66,7 @@ clang-format -i $(find . -path "./build*" -prune  -name "*.c" -o -name "*.cpp" -
 
 cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMakeLists.txt")
 ```
+
+## Code Helper
+
+export CPLUS_INCLUDE_PATH=/home/noam/workOn/dmrg/mdot/src
