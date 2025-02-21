@@ -36,15 +36,10 @@ dimensions `~ 2*d+1` are increasing the application in practice.
 Once compiled, go to the binary folder and import it
 
 ```bash
-$ cd binaryFolder
+$ cd <binaryFolder>
 $ python
 >>> import mdot_operators
 ```
-
-## Examples
-
-Examples of iDMRG/iTEBD/DMRG/... can be found in the `./examples/` folder.
-
 
 ## Code Snippets
 
@@ -62,6 +57,7 @@ cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMak
 
 ## Code Helper
 
-export CPLUS_INCLUDE_PATH=/home/noam/workOn/dmrg/mdot/src
-export PYTHONPATH=/home/noam/workOn/dmrg/mdot11/build2/src/pybind:$PYTHONPATH
-export PYTHONPATH=/home/noam/workOn/dmrg/pyfhmdot:$PYTHONPATH
+export CPLUS_INCLUDE_PATH=</PATH/TO/mdot/src>
+export PYTHONPATH=</PATH/TO/build/src/pybind>:$PYTHONPATH
+export PYTHONPATH=</PATH/TO/pyfhmdot>:$PYTHONPATH
+export OMP_NUM_THREADS=4
