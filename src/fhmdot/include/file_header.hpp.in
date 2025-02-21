@@ -5,6 +5,11 @@
 
 namespace fhmdot
 {
+      typedef enum
+      {
+            fhm_fast = 1,   // ZSTD_fast
+            fhm_storage = 9 // ZSTD_btultra2
+      } fhm_level;
 
       namespace fheader
       {
@@ -21,18 +26,25 @@ namespace fhmdot
                   return "P:F";
 #endif
             }
-            const std::string static text(bool is_complex)
+            const std::string static runtime_complex_number(bool is_complex)
             {
-                  auto head = version() + "," + precision() + ",";
                   if (is_complex)
                   {
-                        head.append("C:T");
+                        return "C:T";
                   }
                   else
                   {
-                        head.append("C:F");
-                  }
-                  return head;
+                        return "C:F";
+                  };
+            }
+            const std::string static runtime_compression(fhm_level level = fhm_fast)
+            {
+                  return "L:" + std::to_string(level);
+            }
+
+            const std::string static text(bool is_complex, fhm_level level = fhm_fast)
+            {
+                  return version() + "," + precision() + "," + runtime_complex_number(level) + "," + runtime_compression(level);
             }
 
       } // namespace fheader

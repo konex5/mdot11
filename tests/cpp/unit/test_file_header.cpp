@@ -23,22 +23,27 @@ BOOST_AUTO_TEST_CASE(unittest_file_header_float_precision)
   BOOST_CHECK(precision_header.length() == 3);
 }
 
-BOOST_AUTO_TEST_CASE(unittest_file_header_runtime)
+BOOST_AUTO_TEST_CASE(unittest_file_header_runtime_complex)
+{
+  BOOST_CHECK(fhmdot::fheader::runtime_complex_number(false) == "C:F");
+  BOOST_CHECK(fhmdot::fheader::runtime_complex_number(true) == "C:T");
+}
+
+BOOST_AUTO_TEST_CASE(unittest_file_header_compression)
+{
+  BOOST_CHECK(fhmdot::fheader::runtime_compression(fhmdot::fhm_fast) == "L:1");
+  BOOST_CHECK(fhmdot::fheader::runtime_compression(fhmdot::fhm_storage) == "L:9");
+}
+
+BOOST_AUTO_TEST_CASE(unittest_file_header_text)
 {
   std::string header_real = fhmdot::fheader::text(false);
   BOOST_CHECK(header_real.at(0) == 'V');
+  BOOST_CHECK(header_real.at(7) == ',');
   BOOST_CHECK(header_real.at(8) == 'P');
+  BOOST_CHECK(header_real.at(11) == ',');
   BOOST_CHECK(header_real.at(12) == 'C');
-  BOOST_CHECK(header_real.length() == 15);
-
-  std::string header_cmpx = fhmdot::fheader::text(true);
-  BOOST_CHECK(header_cmpx.at(0) == 'V');
-  BOOST_CHECK(header_cmpx.at(8) == 'P');
-  BOOST_CHECK(header_cmpx.at(12) == 'C');
-  BOOST_CHECK(header_cmpx.length() == 15);
-
-  BOOST_CHECK(header_real.at(13) == ':');
-  BOOST_CHECK(header_real.at(14) == 'F');
-  BOOST_CHECK(header_cmpx.at(13) == ':');
-  BOOST_CHECK(header_cmpx.at(14) == 'T');
+  BOOST_CHECK(header_real.at(15) == ',');
+  BOOST_CHECK(header_real.at(16) == 'L');
+  BOOST_CHECK(header_real.length() == 19);
 }
