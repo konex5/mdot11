@@ -11,7 +11,7 @@
 #include <string>
 #include <tuple>
 
-#include "mdot/include/operators.hpp"
+#include "mdot/include/blocs_static.hpp"
 #include "mdot/include/operators_static.hpp"
 
 namespace py = pybind11;
@@ -23,36 +23,40 @@ using pydblocs_type =
 using pyzblocs_type =
     std::map<std::tuple<uint8_t, uint8_t>, numpy_array<double>>;
 
-pydblocs_type single_operator_re(std::string name, std::string qbasis) {
-  // mdot::
-  auto test = single_operator_real(name, qbasis);
-  dnum_t normalisation = std::get<1>(test);
-  auto blocs = std::get<0>(test);
-  //
-  pydblocs_type output;
-  //
-  for (auto const &x : blocs) {
-    std::tuple<uint8_t, uint8_t> indices = {std::get<0>(x.first),
-                                            std::get<1>(x.first)};
-    std::vector<dnum_t> vec_arr = x.second;
-    //
-    std::size_t n = vec_arr.size();
-    for (int i = 0; i < 4; i++) {
-      std::cout << vec_arr[i] << " " << std::endl;
-    }
-    // vec_arr.reserve(n);
-    dnum_t *ptr = vec_arr.data();
-    auto deallocator = py::capsule(&vec_arr, [](void *ptr) {
-      auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
-      for (int i = 0; i < 4; i++) {
-        std::cout << vec_ptr->at(i) << " " << std::endl;
-      }
-      vec_ptr->clear();
-    });
-    numpy_array<dnum_t> np_out(n, ptr, deallocator);
-    output[indices] = np_out;
+pydblocs_type py_single_operator_blocs_real(std::string name) {
+  index_t nb_blocs;
+  std::vector<std::tuple<index_t, index_t>> indices;
+  std::vector<index_t> sizes;
+  std::vector<std::tuple<index_t, index_t>> shapes;
+  std::vector<std::vector<double>> vecs;
+
+  if (name == "sh-id") {
+    nb_blocs = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::nb_blocs;
+    indices = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_indices();
+    sizes = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_sizes();
+    shapes = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_shapes();
+    auto arrs = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_arrays();
+    for (index_t i=0;i<nb_blocs;i++)
+      vecs.push_back(std::vector<double>(arrs[i].begin(),arrs[i].end()));
+  } else {
+    throw std::invalid_argument(std::string("The single operator (blocs) \"") + name +
+                                std::string("\" is not available.\n"
+                                            "\t\t- Available operators are "
+                                            "sh-id, sh-sp, sh-sm, sh-sx, "
+                                            "sh-sz, ..."));
   }
 
+  pydblocs_type output;
+
+  for(index_t i=0;i<nb_blocs;i++) {
+    auto deallocator = py::capsule(&vecs[i], [](void *ptr) {
+      auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
+      vec_ptr->clear();
+    });
+    numpy_array<dnum_t> np_out(sizes[i], vecs[i].data(), deallocator);
+    np_out.resize({std::get<0>(shapes[i]),std::get<1>(shapes[i])});
+    output[{std::get<0>(indices[i]),std::get<1>(indices[i])}] = np_out;
+  }
   return output;
 }
 
@@ -112,9 +116,7 @@ numpy_array<double> py_single_operator_real(std::string name) {
 
 PYBIND11_MODULE(operators_mdot, m) {
   m.doc() = "a pybind11 for quantum simulations";
-  // py::bind_map<std::map<std::tuple<uint8_t, uint8_t>,
-  // numpy_array<double>>>(m, "MapBlocsDouble");
   m.def("single_operator_real", &py_single_operator_real,
         py::arg("name") = "sh-id", "return a dense single operator.");
-  m.def("single_operator_re", &single_operator_re, "return operators");
+  m.def("single_operator_blocs_real", &py_single_operator_blocs_real, "return a dictionary of blocs.");
 }
