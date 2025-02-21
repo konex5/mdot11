@@ -3,7 +3,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(numpywrap, m) {
+PYBIND11_MODULE(cool_example, m) {
   m.def("f", []() {
     constexpr size_t elsize = sizeof(double);
     size_t shape[3]{100, 1000, 1000};
@@ -14,7 +14,7 @@ PYBIND11_MODULE(numpywrap, m) {
     for (size_t i = 0; i < a.shape(0); i++) {
       for (size_t j = 0; j < a.shape(1); j++) {
         for (size_t k = 0; k < a.shape(2); k++) {
-          view(i, j, k) = whatever_data_should_go_here(i, j, k);
+          view(i, j, k) = i+ j+ k;
         }
       }
     }
