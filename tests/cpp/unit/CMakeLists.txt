@@ -1,4 +1,4 @@
-set(UNIT_TESTS_NAMES dummy file_header qnum utils) # golden
+set(UNIT_TESTS_NAMES dummy file_header qnum utils yofi) # golden
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)
