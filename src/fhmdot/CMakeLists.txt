@@ -1,7 +1,14 @@
+# * Headers
+file(GLOB_RECURSE interfaces "include/*.hpp")
+add_library(fhmdot_headers INTERFACE ${interfaces})
+install(fhmdot_headers)
+
+# * Objects
+
+
+# * Libraries
 set(libraries apply_gate fhmdot_inspect dmrg)
-
 foreach(library ${libraries})
-
   if(${PROJECT_STATIC})
     add_library(${library} STATIC core/${library}.cpp)
   else()
@@ -9,19 +16,16 @@ foreach(library ${libraries})
   endif()
   target_link_libraries(${library} ${TBB_TBB_LIBRARY_RELEASE} Boost::system
                         Boost::filesystem)
-
 endforeach()
 
-set(clicommands fhmdot_exe)
 
-foreach(clicommand ${clicommands})
-
-  add_executable(cli_${clicommand} cli/${clicommand}.cpp)
-  # target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES})
-
-  install(
-    TARGETS cli_${clicommand}
-    CONFIGURATIONS Release
-    DESTINATION bin)
-
-endforeach()
+# # * Executable
+# set(clicommands fhmdot_exe)
+# foreach(clicommand ${clicommands})
+#   add_executable(cli_${clicommand} cli/${clicommand}.cpp)
+#   # target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES})
+#   install(
+#     TARGETS cli_${clicommand}
+#     CONFIGURATIONS Release
+#     DESTINATION bin)
+# endforeach()
