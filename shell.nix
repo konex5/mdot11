@@ -74,9 +74,9 @@ let
 
 in
 mkCustomShell {
-  buildInputs = [ boost17x mkl spdlog tbb ] ++ [ pythonEnv ]; # lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ];
+  buildInputs = [ boost17x spdlog tbb ] ++ [ pythonEnv ]; # lib.optionals (stdenv.hostPlatform.isLinux) [ glibcLocales ]; # mkl
 
-  nativeBuildInputs = [ cmake gnumake ninja mkl ] ++ [
+  nativeBuildInputs = [ cmake gnumake ninja ] ++ [ # mkl
     bashCompletion
     bashInteractive
     cacert
