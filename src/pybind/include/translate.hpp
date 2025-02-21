@@ -38,6 +38,23 @@ void translate_dgbloc_py2cpp(dgbloc_t &target_cpp,
   }
 }
 
+void translate_dtbloc_py2cpp(dtbloc_t &target_cpp,
+                             const pydtbloc_type &src_py) {
+  for (auto &[src_key, src_value] : src_py) {
+    auto src_shape = src_value.shape();
+    t_shape_t target_shape =
+        std::tuple<std::size_t, std::size_t, std::size_t, std::size_t>(
+            static_cast<std::size_t>(src_shape[0]),
+            static_cast<std::size_t>(src_shape[1]),
+            static_cast<std::size_t>(src_shape[2]),
+            static_cast<std::size_t>(src_shape[3]));
+    std::vector<dnum_t> target_array(src_value.data(),
+                                     src_value.data() + src_value.size());
+    target_cpp[src_key] = {target_shape, target_array};
+  }
+}
+
+
 void translate_dmenvbloc_py2cpp(dmenvbloc_t &target_cpp,
                                 const pydmenvbloc_type &src_py) {
   for (auto &[src_key, src_value] : src_py) {
@@ -51,6 +68,27 @@ void translate_dmenvbloc_py2cpp(dmenvbloc_t &target_cpp,
             static_cast<std::size_t>(src_shape[3]),
             static_cast<std::size_t>(src_shape[4]),
             static_cast<std::size_t>(src_shape[5]));
+    std::vector<dnum_t> target_array(src_value.data(),
+                                     src_value.data() + src_value.size());
+    target_cpp[src_key] = {target_shape, target_array};
+  }
+}
+
+void translate_dmmenvbloc_py2cpp(dmmenvbloc_t &target_cpp,
+                                const pydmmenvbloc_type &src_py) {
+  for (auto &[src_key, src_value] : src_py) {
+    auto src_shape = src_value.shape();
+    mmenv_shape_t target_shape =
+        std::tuple<std::size_t, std::size_t, std::size_t, std::size_t,
+                   std::size_t, std::size_t,std::size_t,std::size_t>(
+            static_cast<std::size_t>(src_shape[0]),
+            static_cast<std::size_t>(src_shape[1]),
+            static_cast<std::size_t>(src_shape[2]),
+            static_cast<std::size_t>(src_shape[3]),
+            static_cast<std::size_t>(src_shape[4]),
+            static_cast<std::size_t>(src_shape[5]),
+            static_cast<std::size_t>(src_shape[6]),
+            static_cast<std::size_t>(src_shape[7]));
     std::vector<dnum_t> target_array(src_value.data(),
                                      src_value.data() + src_value.size());
     target_cpp[src_key] = {target_shape, target_array};
