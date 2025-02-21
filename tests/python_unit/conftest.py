@@ -1,31 +1,15 @@
-from numpy import dtype
 import pytest
-import numpy as np
-
-
-def user_type(complex: bool):
-    from fhm import is_float
-
-    if is_float and complex:
-
-        if complex:
-            return dtype
-
 
 @pytest.fixture
-def make_mps():
-    def _make_mps(i=None, d=None, j=None):
-        if i is None:
-            i = np.random.randint(100)
-        if d is None:
-            d = np.random.randint(5)
-        if j is None:
-            j = np.random.randint(100)
-        mps = np.random.random.rand(i * d * j, dtype="u8").reshape(i, d, j)
-        return mps
+def make_list_operator_name():
+    def _make_list_operator_name():
+        return ['sh-id','sh-sp','sh-sm','sh-sx','sh-sz'], ['sh-id-cplx','sh-sy']
 
-    return _make_mps
+    return _make_list_operator_name
 
 
-def mps(make_mps):
-    return make_mps()
+def make_list_real_operator_name(make_list_operator_name):
+    return make_list_operator_name()[0]
+
+def make_list_cplx_operator_name(make_list_operator_name):
+    return make_list_operator_name()[1]

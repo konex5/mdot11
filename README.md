@@ -70,3 +70,4 @@ cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMak
 ## Code Helper
 
 export CPLUS_INCLUDE_PATH=/home/noam/workOn/dmrg/mdot/src
+export PYTHONPATH=/home/noam/workOn/dmrg/fhmdot/build2/src/pybind:$PYTHONPATH
