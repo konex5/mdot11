@@ -1,5 +1,6 @@
 # * BUILD
 pybind11_add_module(fmd_operators fmd_operators.cpp)
+pybind11_add_module(fmd_routine fmd_routine.cpp)
 pybind11_add_module(cool_example cool_example.cpp)
 
 # * INSTALLATION
