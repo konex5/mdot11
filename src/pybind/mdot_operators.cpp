@@ -65,6 +65,46 @@ pydblocs_type py_single_operator_blocs_real(std::string name) {
     auto arrs = mdot::real_sh_blocs_crtp<mdot::sh_sz_u1>::get_arrays();
     for (index_t i = 0; i < nb_blocs; i++)
       vecs.push_back(std::vector<double>(arrs[i].begin(), arrs[i].end()));
+  } else if (name == "sh_id_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::real_sh_operators_crtp<mdot::sh_id_no>::size};
+    shapes = {{mdot::real_sh_operators_crtp<mdot::sh_id_no>::shape[0],
+             mdot::real_sh_operators_crtp<mdot::sh_id_no>::shape[1]}};
+    auto arr = mdot::real_sh_operators_crtp<mdot::sh_id_no>::array;
+    vecs.push_back(std::vector<double>(arr.begin(), arr.end()));
+  } else if (name == "sh_sm_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::real_sh_operators_crtp<mdot::sh_sm_no>::size};
+    shapes = {{mdot::real_sh_operators_crtp<mdot::sh_sm_no>::shape[0],
+             mdot::real_sh_operators_crtp<mdot::sh_sm_no>::shape[1]}};
+    auto arr = mdot::real_sh_operators_crtp<mdot::sh_sm_no>::array;
+    vecs.push_back(std::vector<double>(arr.begin(), arr.end()));
+  } else if (name == "sh_sp_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::real_sh_operators_crtp<mdot::sh_sp_no>::size};
+    shapes = {{mdot::real_sh_operators_crtp<mdot::sh_sp_no>::shape[0],
+             mdot::real_sh_operators_crtp<mdot::sh_sp_no>::shape[1]}};
+    auto arr = mdot::real_sh_operators_crtp<mdot::sh_sp_no>::array;
+    vecs.push_back(std::vector<double>(arr.begin(), arr.end()));
+  } else if (name == "sh_sx_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::real_sh_operators_crtp<mdot::sh_sx_no>::size};
+    shapes = {{mdot::real_sh_operators_crtp<mdot::sh_sx_no>::shape[0],
+             mdot::real_sh_operators_crtp<mdot::sh_sx_no>::shape[1]}};
+    auto arr = mdot::real_sh_operators_crtp<mdot::sh_sx_no>::array;
+    vecs.push_back(std::vector<double>(arr.begin(), arr.end()));
+  } else if (name == "sh_sz_no") {
+    nb_blocs = 1;
+    indices = {{0,0}};
+    sizes = {mdot::real_sh_operators_crtp<mdot::sh_sz_no>::size};
+    shapes = {{mdot::real_sh_operators_crtp<mdot::sh_sz_no>::shape[0],
+             mdot::real_sh_operators_crtp<mdot::sh_sz_no>::shape[1]}};
+    auto arr = mdot::real_sh_operators_crtp<mdot::sh_sz_no>::array;
+    vecs.push_back(std::vector<double>(arr.begin(), arr.end()));
   } else {
     throw std::invalid_argument(std::string("The single operator (blocs) \"") +
                                 name +
@@ -203,39 +243,6 @@ numpy_array<double> py_single_operator_real(std::string name) {
     vec_ptr->clear();
   });
   numpy_array<double> np_out(ndim, vec.data(), deallocator);
-  np_out.resize(shape);
-  return np_out;
-}
-
-numpy_array<znum_t> py_single_operator_cplx(std::string name) {
-  py::ssize_t ndim;
-  std::vector<py::ssize_t> shape;
-  std::vector<znum_t> vec;
-  if (name == "sh-id") {
-    ndim = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::size;
-    shape = {mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[0],
-             mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::shape[1]};
-    auto arr = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::array;
-    vec = std::vector<znum_t>(arr.begin(), arr.end());
-  } else if (name == "sh-sy") {
-    ndim = mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::size;
-    shape = {mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[0],
-             mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[1]};
-    auto arr = mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::array;
-    vec = std::vector<znum_t>(arr.begin(), arr.end());
-  } else {
-    throw std::invalid_argument(std::string("The single operator \"") + name +
-                                std::string("\" is not available.\n"
-                                            "\t\t- Available operators are "
-                                            "sh-id, sh-sy, ..."));
-  }
-  //
-  auto deallocator = py::capsule(&vec, [](void *f) {
-    // py::detail::get_internals();
-    auto vec_ptr = reinterpret_cast<std::vector<znum_t> *>(f);
-    vec_ptr->clear();
-  });
-  numpy_array<znum_t> np_out(ndim, vec.data(), deallocator);
   np_out.resize(shape);
   return np_out;
 }
