@@ -28,3 +28,34 @@ void translate_dmbloc_py2cpp(dmbloc_t target_cpp, pydmbloc_type src_py) {
     }
 
 }
+
+void translate_dmbloc_cpp2py(pydmbloc_type target_py, dmbloc_t src_cpp) {
+    for (auto& [src_key,src_value] : src_cpp) {
+        auto src_shape = src_value.first;
+        //py::ssize_t target_shape[2] = {static_cast<py::ssize_t>(std::get<0>(src_shape)),static_cast<py::ssize_t>(std::get<1>(src_shape)),static_cast<py::ssize_t>(std::get<2>(src_shape)) };
+        py::ssize_t np_size = src_value.second.size();
+        auto ptr = src_value.second.data();
+        auto deallocator = py::capsule(&src_value.second, [](void *ptr) {
+        auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
+            vec_ptr->clear();
+        });
+        numpy_array<dnum_t> np_target_array(np_size, ptr, deallocator);
+        target_py[src_key] = np_target_array;
+    }
+}
+
+
+void translate_dtbloc_cpp2py(pydtbloc_type target_py, dtbloc_t src_cpp) {
+    for (auto& [src_key,src_value] : src_cpp) {
+        auto src_shape = src_value.first;
+        //py::ssize_t target_shape[3] = {static_cast<py::ssize_t>(std::get<0>(src_shape)),static_cast<py::ssize_t>(std::get<1>(src_shape)),static_cast<py::ssize_t>(std::get<2>(src_shape)),static_cast<py::ssize_t>(std::get<3>(src_shape)) };
+        py::ssize_t np_size = src_value.second.size();
+        auto ptr = src_value.second.data();
+        auto deallocator = py::capsule(&src_value.second, [](void *ptr) {
+        auto vec_ptr = reinterpret_cast<std::vector<dnum_t> *>(ptr);
+            vec_ptr->clear();
+        });
+        numpy_array<dnum_t> np_target_array(np_size, ptr, deallocator);
+        target_py[src_key] = np_target_array;
+    }
+}

@@ -6,6 +6,7 @@
 #include "mdot/include/routine/interface.hpp"
 #include "pybind/include/translate.hpp"
 
+#include <iostream>
 namespace py = pybind11;
 
 template <typename T> using numpy_array = py::array_t<T, py::array::c_style>;
@@ -24,6 +25,8 @@ void py_mm_to_theta_no_gate(pydtbloc_type dst, pydmbloc_type lhs, pydmbloc_type 
     translate_dmbloc_py2cpp(tmp_rhs,rhs);
     dtbloc_t tmp_dst;
     mdot::mm_to_theta_no_gate(tmp_dst,tmp_lhs,tmp_rhs,conserve_left_right);
+    translate_dtbloc_cpp2py(dst,tmp_dst);
+    std::cout << "metal!" << std::endl;
 }
 
 
