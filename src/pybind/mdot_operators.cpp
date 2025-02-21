@@ -216,7 +216,7 @@ numpy_array<znum_t> py_single_operator_cplx(std::string name) {
   }
   //
   auto deallocator = py::capsule(&vec, [](void *f) {
-    //py::detail::get_internals();
+    // py::detail::get_internals();
     std::cout << "cleaning!" << std::endl;
     auto vec_ptr = reinterpret_cast<std::vector<znum_t> *>(f);
     vec_ptr->clear();

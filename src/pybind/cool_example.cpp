@@ -14,7 +14,7 @@ PYBIND11_MODULE(cool_example, m) {
     for (size_t i = 0; i < a.shape(0); i++) {
       for (size_t j = 0; j < a.shape(1); j++) {
         for (size_t k = 0; k < a.shape(2); k++) {
-          view(i, j, k) = i+ j+ k;
+          view(i, j, k) = i + j + k;
         }
       }
     }
